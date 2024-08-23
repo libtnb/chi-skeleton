@@ -20,7 +20,12 @@ func initHttp() {
 	// add route
 	route.Http(app.Http)
 
-	if err := http.ListenAndServe(app.Conf.MustString("http.address"), app.Http); err != nil {
+	server := &http.Server{
+		Addr:           app.Conf.MustString("http.address"),
+		Handler:        http.AllowQuerySemicolons(app.Http),
+		MaxHeaderBytes: app.Conf.MustInt("http.headerLimit") << 10,
+	}
+	if err := server.ListenAndServe(); err != nil {
 		panic(fmt.Sprintf("failed to start http server: %v", err))
 	}
 }
