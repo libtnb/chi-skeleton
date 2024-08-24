@@ -34,14 +34,18 @@ func Success(w http.ResponseWriter, data any) {
 
 // Error 响应错误
 func Error(w http.ResponseWriter, code int, message string) {
-	chix.NewRender(w).Status(code).JSON(&ErrorResponse{
+	render := chix.NewRender(w)
+	render.Status(code)
+	render.JSON(&ErrorResponse{
 		Message: message,
 	})
 }
 
 // ErrorSystem 响应系统错误
 func ErrorSystem(w http.ResponseWriter) {
-	chix.NewRender(w).Status(http.StatusInternalServerError).JSON(&ErrorResponse{
+	render := chix.NewRender(w)
+	render.Status(http.StatusInternalServerError)
+	render.JSON(&ErrorResponse{
 		Message: http.StatusText(http.StatusInternalServerError),
 	})
 }
