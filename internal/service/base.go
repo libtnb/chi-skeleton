@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"slices"
 	"strings"
@@ -51,8 +52,8 @@ func ErrorSystem(w http.ResponseWriter) {
 }
 
 // Bind 验证并绑定请求参数
-func Bind[T any, PT request.Request[T]](r *http.Request) (*T, error) {
-	req := PT(new(T))
+func Bind[T any](r *http.Request) (*T, error) {
+	req := new(T)
 
 	// 绑定参数
 	binder := chix.NewBind(r)
@@ -68,21 +69,43 @@ func Bind[T any, PT request.Request[T]](r *http.Request) (*T, error) {
 		}
 	}
 
-	// 验证参数
-	if err := req.PrepareForValidation(r); err != nil {
-		return nil, err
-	}
-	if err := app.Validator.Struct(req); err != nil {
-		var errs validator.ValidationErrors
-		if errors.As(err, &errs) {
-			for _, e := range errs {
-				return nil, errors.New(e.Translate(*app.Translator))
-			}
+	// 准备验证
+	if reqWithPrepareForValidation, ok := any(req).(request.HasPrepareForValidation); ok {
+		if err := reqWithPrepareForValidation.PrepareForValidation(r); err != nil {
+			return nil, err
 		}
-		return nil, err
+	}
+	if reqWithAuthorize, ok := any(req).(request.HasAuthorize); ok {
+		if err := reqWithAuthorize.Authorize(r); err != nil {
+			return nil, err
+		}
+	}
+	if reqWithRules, ok := any(req).(request.HasRules); ok {
+		if rules := reqWithRules.Rules(r); rules != nil {
+			app.Validator.RegisterStructValidationMapRules(rules, req)
+		}
 	}
 
-	return req, nil
+	// 验证参数
+	err := app.Validator.Struct(req)
+	if err == nil {
+		return req, nil
+	}
+
+	// 翻译错误信息
+	var errs validator.ValidationErrors
+	if errors.As(err, &errs) {
+		for _, e := range errs {
+			if reqWithMessages, ok := any(req).(request.HasMessages); ok {
+				if msg, found := reqWithMessages.Messages(r)[fmt.Sprintf("%s.%s", e.Field(), e.Tag())]; found {
+					return nil, errors.New(msg)
+				}
+			}
+			return nil, errors.New(e.Translate(*app.Translator))
+		}
+	}
+
+	return nil, err
 }
 
 // Paginate 取分页条目
