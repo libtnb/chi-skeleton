@@ -8,8 +8,8 @@ type HasAuthorize interface {
 	Authorize(r *http.Request) error
 }
 
-type HasPrepareForValidation interface {
-	PrepareForValidation(r *http.Request) error
+type HasPrepare interface {
+	Prepare(r *http.Request) error
 }
 
 type HasRules interface {

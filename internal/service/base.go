@@ -70,8 +70,8 @@ func Bind[T any](r *http.Request) (*T, error) {
 	}
 
 	// 准备验证
-	if reqWithPrepareForValidation, ok := any(req).(request.HasPrepareForValidation); ok {
-		if err := reqWithPrepareForValidation.PrepareForValidation(r); err != nil {
+	if reqWithPrepare, ok := any(req).(request.HasPrepare); ok {
+		if err := reqWithPrepare.Prepare(r); err != nil {
 			return nil, err
 		}
 	}

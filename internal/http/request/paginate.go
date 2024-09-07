@@ -21,7 +21,7 @@ func (r *Paginate) Messages(_ *http.Request) map[string]string {
 	}
 }
 
-func (r *Paginate) PrepareForValidation(_ *http.Request) error {
+func (r *Paginate) Prepare(_ *http.Request) error {
 	if r.Page == 0 {
 		r.Page = 1
 	}
