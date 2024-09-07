@@ -31,6 +31,7 @@ func initOrm() {
 
 func runMigrate() {
 	migrator := gormigrate.New(app.Orm, &gormigrate.Options{
+		UseTransaction:            true, // Note: MySQL not support DDL transaction
 		ValidateUnknownMigrations: true,
 	}, migration.Migrations)
 	if err := migrator.Migrate(); err != nil {
