@@ -14,7 +14,7 @@ import (
 
 func initOrm() {
 	logLevel := logger.Error
-	if app.Conf.Bool("app.debug") {
+	if app.Conf.Bool("database.debug") {
 		logLevel = logger.Info
 	}
 	// You can use any other database, like MySQL or PostgreSQL.
