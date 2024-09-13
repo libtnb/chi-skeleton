@@ -4,18 +4,18 @@ import (
 	"net/http"
 )
 
-type HasAuthorize interface {
+type WithAuthorize interface {
 	Authorize(r *http.Request) error
 }
 
-type HasPrepare interface {
+type WithPrepare interface {
 	Prepare(r *http.Request) error
 }
 
-type HasRules interface {
+type WithRules interface {
 	Rules(r *http.Request) map[string]string
 }
 
-type HasMessages interface {
+type WithMessages interface {
 	Messages(r *http.Request) map[string]string
 }

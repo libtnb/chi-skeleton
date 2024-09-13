@@ -70,17 +70,17 @@ func Bind[T any](r *http.Request) (*T, error) {
 	}
 
 	// 准备验证
-	if reqWithPrepare, ok := any(req).(request.HasPrepare); ok {
+	if reqWithPrepare, ok := any(req).(request.WithPrepare); ok {
 		if err := reqWithPrepare.Prepare(r); err != nil {
 			return nil, err
 		}
 	}
-	if reqWithAuthorize, ok := any(req).(request.HasAuthorize); ok {
+	if reqWithAuthorize, ok := any(req).(request.WithAuthorize); ok {
 		if err := reqWithAuthorize.Authorize(r); err != nil {
 			return nil, err
 		}
 	}
-	if reqWithRules, ok := any(req).(request.HasRules); ok {
+	if reqWithRules, ok := any(req).(request.WithRules); ok {
 		if rules := reqWithRules.Rules(r); rules != nil {
 			app.Validator.RegisterStructValidationMapRules(rules, req)
 		}
@@ -96,7 +96,7 @@ func Bind[T any](r *http.Request) (*T, error) {
 	var errs validator.ValidationErrors
 	if errors.As(err, &errs) {
 		for _, e := range errs {
-			if reqWithMessages, ok := any(req).(request.HasMessages); ok {
+			if reqWithMessages, ok := any(req).(request.WithMessages); ok {
 				if msg, found := reqWithMessages.Messages(r)[fmt.Sprintf("%s.%s", e.Field(), e.Tag())]; found {
 					return nil, errors.New(msg)
 				}
