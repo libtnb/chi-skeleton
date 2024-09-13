@@ -27,7 +27,9 @@ type ErrorResponse struct {
 
 // Success 响应成功
 func Success(w http.ResponseWriter, data any) {
-	chix.NewRender(w).JSON(&SuccessResponse{
+	render := chix.NewRender(w)
+	defer render.Release()
+	render.JSON(&SuccessResponse{
 		Message: "success",
 		Data:    data,
 	})
@@ -36,6 +38,7 @@ func Success(w http.ResponseWriter, data any) {
 // Error 响应错误
 func Error(w http.ResponseWriter, code int, message string) {
 	render := chix.NewRender(w)
+	defer render.Release()
 	render.Status(code)
 	render.JSON(&ErrorResponse{
 		Message: message,
@@ -45,6 +48,7 @@ func Error(w http.ResponseWriter, code int, message string) {
 // ErrorSystem 响应系统错误
 func ErrorSystem(w http.ResponseWriter) {
 	render := chix.NewRender(w)
+	defer render.Release()
 	render.Status(http.StatusInternalServerError)
 	render.JSON(&ErrorResponse{
 		Message: http.StatusText(http.StatusInternalServerError),
@@ -57,6 +61,7 @@ func Bind[T any](r *http.Request) (*T, error) {
 
 	// 绑定参数
 	binder := chix.NewBind(r)
+	defer binder.Release()
 	if err := binder.URI(req); err != nil {
 		return nil, err
 	}
