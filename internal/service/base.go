@@ -106,7 +106,7 @@ func Bind[T any](r *http.Request) (*T, error) {
 					return nil, errors.New(msg)
 				}
 			}
-			return nil, errors.New(e.Translate(*app.Translator))
+			return nil, errors.New(e.Translate(*app.Translator)) // nolint:staticcheck
 		}
 	}
 
