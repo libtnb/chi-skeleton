@@ -2,8 +2,8 @@ package app
 
 import (
 	"log/slog"
-	"net/http"
 
+	"github.com/bddjr/hlfhr"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-rat/sessions"
 	"github.com/knadh/koanf/v2"
@@ -14,14 +14,14 @@ import (
 type App struct {
 	conf    *koanf.Koanf
 	router  *chi.Mux
-	http    *http.Server
+	http    *hlfhr.Server
 	db      *gorm.DB
 	cron    *cron.Cron
 	session *sessions.Manager
 	log     *slog.Logger
 }
 
-func NewApp(conf *koanf.Koanf, router *chi.Mux, http *http.Server, db *gorm.DB, cron *cron.Cron, session *sessions.Manager, log *slog.Logger) *App {
+func NewApp(conf *koanf.Koanf, router *chi.Mux, http *hlfhr.Server, db *gorm.DB, cron *cron.Cron, session *sessions.Manager, log *slog.Logger) *App {
 	return &App{
 		conf:    conf,
 		router:  router,

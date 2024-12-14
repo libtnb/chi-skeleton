@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"net/http"
 
+	"github.com/bddjr/hlfhr"
 	"github.com/go-chi/chi/v5"
 	"github.com/knadh/koanf/v2"
 
@@ -21,12 +22,15 @@ func NewRouter(http *route.Http) (*chi.Mux, error) {
 	return r, nil
 }
 
-func NewHttp(conf *koanf.Koanf, r *chi.Mux) (*http.Server, error) {
-	server := &http.Server{
+func NewHttp(conf *koanf.Koanf, r *chi.Mux) (*hlfhr.Server, error) {
+	srv := hlfhr.New(&http.Server{
 		Addr:           conf.MustString("http.address"),
 		Handler:        http.AllowQuerySemicolons(r),
-		MaxHeaderBytes: conf.MustInt("http.headerLimit") << 10,
-	}
+		MaxHeaderBytes: 2048 << 20,
+	})
+	srv.HttpOnHttpsPortErrorHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hlfhr.RedirectToHttps(w, r, http.StatusTemporaryRedirect)
+	})
 
-	return server, nil
+	return srv, nil
 }

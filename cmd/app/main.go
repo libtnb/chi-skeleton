@@ -1,6 +1,9 @@
 package main
 
-import "runtime/debug"
+import (
+	"runtime/debug"
+	_ "time/tzdata"
+)
 
 func main() {
 	debug.SetGCPercent(10)

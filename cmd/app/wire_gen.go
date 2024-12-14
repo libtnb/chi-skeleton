@@ -14,6 +14,10 @@ import (
 	"github.com/go-rat/chi-skeleton/internal/service"
 )
 
+import (
+	_ "time/tzdata"
+)
+
 // Injectors from wire.go:
 
 // initApp init application.
@@ -22,7 +26,8 @@ func initApp() (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
-	db, err := bootstrap.NewDB(koanf)
+	logger := bootstrap.NewLog(koanf)
+	db, err := bootstrap.NewDB(koanf, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +42,6 @@ func initApp() (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
-	logger := bootstrap.NewLog(koanf)
 	cron := bootstrap.NewCron(koanf, logger)
 	manager, err := bootstrap.NewSession(koanf, db)
 	if err != nil {
