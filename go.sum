@@ -34,6 +34,8 @@ github.com/go-viper/mapstructure/v2 v2.2.1 h1:ZAaOCxANMuZx5RCeg0mBdEZk7DZasvvZIx
 github.com/go-viper/mapstructure/v2 v2.2.1/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
 github.com/gofiber/schema v1.2.0 h1:j+ZRrNnUa/0ZuWrn/6kAtAufEr4jCJ+JuTURAMxNSZg=
 github.com/gofiber/schema v1.2.0/go.mod h1:YYwj01w3hVfaNjhtJzaqetymL56VW642YS3qZPhuE6c=
+github.com/golang-cz/httplog v0.0.0-20241002114323-98e09d6f537a h1:BAyyIK6rc6Tq9vT2KVlPJXD8EVv/LpaFwn4fgfLwtHg=
+github.com/golang-cz/httplog v0.0.0-20241002114323-98e09d6f537a/go.mod h1:bgk4Ij/0OQ89UeoFFAQrSNhbbr4rKJ0fwWfo7wc+TCc=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
 github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=

@@ -14,6 +14,7 @@ require (
 	github.com/go-rat/gormstore v1.0.6
 	github.com/go-rat/sessions v1.0.11
 	github.com/go-rat/utils v1.0.7
+	github.com/golang-cz/httplog v0.0.0-20241002114323-98e09d6f537a
 	github.com/google/wire v0.6.0
 	github.com/gookit/validate v1.5.3
 	github.com/gorilla/websocket v1.5.3

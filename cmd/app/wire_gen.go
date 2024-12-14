@@ -31,11 +31,15 @@ func initApp() (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
+	manager, err := bootstrap.NewSession(koanf, db)
+	if err != nil {
+		return nil, err
+	}
 	userRepo := data.NewUserRepo(db)
 	userService := service.NewUserService(userRepo)
 	http := route.NewHttp(userService)
 	ws := route.NewWs()
-	mux, err := bootstrap.NewRouter(http, ws)
+	mux, err := bootstrap.NewRouter(logger, manager, http, ws)
 	if err != nil {
 		return nil, err
 	}
@@ -44,10 +48,6 @@ func initApp() (*app.App, error) {
 		return nil, err
 	}
 	cron := bootstrap.NewCron(koanf, logger)
-	manager, err := bootstrap.NewSession(koanf, db)
-	if err != nil {
-		return nil, err
-	}
 	appApp := app.NewApp(koanf, mux, server, db, cron, manager, logger)
 	return appApp, nil
 }
