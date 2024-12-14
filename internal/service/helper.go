@@ -114,26 +114,27 @@ func Bind[T any](r *http.Request) (*T, error) {
 }
 
 // Paginate 取分页条目
-func Paginate[T any](r request.Paginate, allItems []T) (pagedItems []T, total uint) {
-	if r.Page == 0 {
-		r.Page = 1
+func Paginate[T any](r *http.Request, items []T) (pagedItems []T, total uint) {
+	req, err := Bind[request.Paginate](r)
+	if err != nil {
+		req = &request.Paginate{
+			Page:  1,
+			Limit: 10,
+		}
 	}
-	if r.Limit == 0 {
-		r.Limit = 10
-	}
-	total = uint(len(allItems))
-	startIndex := (r.Page - 1) * r.Limit
-	endIndex := r.Page * r.Limit
+	total = uint(len(items))
+	start := (req.Page - 1) * req.Limit
+	end := req.Page * req.Limit
 
 	if total == 0 {
 		return []T{}, 0
 	}
-	if startIndex > total {
+	if start > total {
 		return []T{}, total
 	}
-	if endIndex > total {
-		endIndex = total
+	if end > total {
+		end = total
 	}
 
-	return allItems[startIndex:endIndex], total
+	return items[start:end], total
 }
