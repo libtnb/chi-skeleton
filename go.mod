@@ -13,7 +13,7 @@ require (
 	github.com/golang-module/carbon/v2 v2.3.12
 	github.com/google/wire v0.6.0
 	github.com/knadh/koanf/parsers/yaml v0.1.0
-	github.com/knadh/koanf/providers/file v1.1.0
+	github.com/knadh/koanf/providers/file v1.1.2
 	github.com/knadh/koanf/v2 v2.1.1
 	gorm.io/gorm v1.25.12
 )
