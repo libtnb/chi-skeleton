@@ -11,13 +11,15 @@ import (
 	"github.com/go-rat/chi-skeleton/internal/route"
 )
 
-func NewRouter(http *route.Http) (*chi.Mux, error) {
+func NewRouter(http *route.Http, ws *route.Ws) (*chi.Mux, error) {
 	r := chi.NewRouter()
 
 	// add middleware
 	r.Use(middleware.GlobalMiddleware(r)...)
 	// add http route
 	http.Register(r)
+	// add ws route
+	ws.Register(r)
 
 	return r, nil
 }

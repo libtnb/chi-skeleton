@@ -34,7 +34,8 @@ func initApp() (*app.App, error) {
 	userRepo := data.NewUserRepo(db)
 	userService := service.NewUserService(userRepo)
 	http := route.NewHttp(userService)
-	mux, err := bootstrap.NewRouter(http)
+	ws := route.NewWs()
+	mux, err := bootstrap.NewRouter(http, ws)
 	if err != nil {
 		return nil, err
 	}
