@@ -9,7 +9,7 @@ require (
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.22.1
-	github.com/go-rat/chix v1.1.3
+	github.com/go-rat/chix v1.1.4
 	github.com/golang-module/carbon/v2 v2.3.12
 	github.com/google/wire v0.6.0
 	github.com/knadh/koanf/parsers/yaml v0.1.0
@@ -24,6 +24,7 @@ require (
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/glebarez/go-sqlite v1.22.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.0.0 // indirect
+	github.com/gofiber/schema v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
