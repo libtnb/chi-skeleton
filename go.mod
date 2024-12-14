@@ -23,12 +23,14 @@ require (
 	github.com/knadh/koanf/v2 v2.1.2
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/stretchr/testify v1.10.0
 	github.com/urfave/cli/v3 v3.0.0-beta1
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/gorm v1.25.12
 )
 
 require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.6 // indirect
@@ -47,8 +49,10 @@ require (
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/spf13/cast v1.7.0 // indirect
+	github.com/stretchr/objx v0.5.2 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
