@@ -20,7 +20,7 @@ func NewHttp(user *service.UserService) *Http {
 
 func (r *Http) Register(router *chi.Mux) {
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, World 👋!"))
+		_, _ = w.Write([]byte("Hello, World 👋!"))
 	})
 
 	router.Get("/users", r.user.List)

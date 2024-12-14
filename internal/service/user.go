@@ -33,7 +33,6 @@ func (s *UserService) List(w http.ResponseWriter, r *http.Request) {
 		"total": total,
 		"items": users,
 	})
-	return
 }
 
 func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +49,6 @@ func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Success(w, user)
-	return
 }
 
 func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
@@ -68,7 +66,6 @@ func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Success(w, user)
-	return
 }
 
 func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +84,6 @@ func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Success(w, user)
-	return
 }
 
 func (s *UserService) Delete(w http.ResponseWriter, r *http.Request) {
@@ -103,5 +99,4 @@ func (s *UserService) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Success(w, nil)
-	return
 }

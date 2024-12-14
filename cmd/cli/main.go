@@ -14,5 +14,7 @@ func main() {
 		panic(err)
 	}
 
-	cli.Run()
+	if err = cli.Run(); err != nil {
+		panic(err)
+	}
 }
