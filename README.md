@@ -11,6 +11,8 @@
 
 Goravel 是一个非常容易上手的优秀框架，但其完全复制 Laravel 的设计导致了它是一个重量级框架，不符合以上设计理念。因此便有了本脚手架。
 
+和 [fiber-skeleton](https://github.com/go-rat/fiber-skeleton) 不同，此脚手架使用了最轻量的 [chi](https://github.com/go-chi/chi) 框架。
+
 ## 设计
 
 按以上设计理念，最终本脚手架的目录结构如下：
