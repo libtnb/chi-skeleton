@@ -14,22 +14,15 @@ import (
 
 func NewDB(conf *koanf.Koanf, log *slog.Logger) (*gorm.DB, error) {
 	// You can use any other database, like MySQL or PostgreSQL.
-	db, err := gorm.Open(sqlite.Open(conf.MustString("database.path")), &gorm.Config{
+	return gorm.Open(sqlite.Open(conf.MustString("database.path")), &gorm.Config{
 		Logger:                                   slogGorm.New(slogGorm.WithHandler(log.Handler())),
 		SkipDefaultTransaction:                   true,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
 }
 
-func NewMigrate(db *gorm.DB) error {
-	migrator := gormigrate.New(db, &gormigrate.Options{
+func NewMigrate(db *gorm.DB) *gormigrate.Gormigrate {
+	return gormigrate.New(db, &gormigrate.Options{
 		UseTransaction: true, // Note: MySQL not support DDL transaction
 	}, migration.Migrations)
-
-	return migrator.Migrate()
 }

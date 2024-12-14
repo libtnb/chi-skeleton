@@ -47,7 +47,8 @@ func initApp() (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
+	gormigrate := bootstrap.NewMigrate(db)
 	cron := bootstrap.NewCron(koanf, logger)
-	appApp := app.NewApp(koanf, mux, server, db, cron, manager, logger)
+	appApp := app.NewApp(koanf, mux, server, db, gormigrate, cron, manager, logger)
 	return appApp, nil
 }
