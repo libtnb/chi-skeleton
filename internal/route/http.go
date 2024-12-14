@@ -8,15 +8,24 @@ import (
 	"github.com/go-rat/chi-skeleton/internal/service"
 )
 
-func Http(r chi.Router) {
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+type Http struct {
+	user *service.UserService
+}
+
+func NewHttp(user *service.UserService) *Http {
+	return &Http{
+		user: user,
+	}
+}
+
+func (r *Http) Register(router *chi.Mux) {
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello, World 👋!"))
 	})
 
-	user := service.NewUserService()
-	r.Get("/users", user.List)
-	r.Post("/users", user.Create)
-	r.Get("/users/:id", user.Get)
-	r.Put("/users/:id", user.Update)
-	r.Delete("/users/:id", user.Delete)
+	router.Get("/users", r.user.List)
+	router.Post("/users", r.user.Create)
+	router.Get("/users/:id", r.user.Get)
+	router.Put("/users/:id", r.user.Update)
+	router.Delete("/users/:id", r.user.Delete)
 }

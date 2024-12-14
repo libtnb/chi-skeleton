@@ -10,7 +10,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/go-rat/chix"
 
-	"github.com/go-rat/chi-skeleton/internal/app"
 	"github.com/go-rat/chi-skeleton/internal/http/request"
 )
 
@@ -56,7 +55,7 @@ func ErrorSystem(w http.ResponseWriter) {
 }
 
 // Bind 验证并绑定请求参数
-func Bind[T any](r *http.Request) (*T, error) {
+func Bind[T any](r *http.Request, validate *validator.Validate) (*T, error) {
 	req := new(T)
 
 	// 绑定参数
@@ -87,12 +86,12 @@ func Bind[T any](r *http.Request) (*T, error) {
 	}
 	if reqWithRules, ok := any(req).(request.WithRules); ok {
 		if rules := reqWithRules.Rules(r); rules != nil {
-			app.Validator.RegisterStructValidationMapRules(rules, req)
+			validate.RegisterStructValidationMapRules(rules, req)
 		}
 	}
 
 	// 验证参数
-	err := app.Validator.Struct(req)
+	err := validate.Struct(req)
 	if err == nil {
 		return req, nil
 	}
@@ -106,7 +105,6 @@ func Bind[T any](r *http.Request) (*T, error) {
 					return nil, errors.New(msg)
 				}
 			}
-			return nil, errors.New(e.Translate(*app.Translator)) // nolint:staticcheck
 		}
 	}
 
@@ -114,15 +112,16 @@ func Bind[T any](r *http.Request) (*T, error) {
 }
 
 // Paginate 取分页条目
-func Paginate[T any](r *http.Request, allItems []T) (pagedItems []T, total uint) {
-	req, err := Bind[request.Paginate](r)
-	if err != nil {
-		req.Page = 1
-		req.Limit = 10
+func Paginate[T any](r request.Paginate, allItems []T) (pagedItems []T, total uint) {
+	if r.Page == 0 {
+		r.Page = 1
+	}
+	if r.Limit == 0 {
+		r.Limit = 10
 	}
 	total = uint(len(allItems))
-	startIndex := (req.Page - 1) * req.Limit
-	endIndex := req.Page * req.Limit
+	startIndex := (r.Page - 1) * r.Limit
+	endIndex := r.Page * r.Limit
 
 	if total == 0 {
 		return []T{}, 0
@@ -135,13 +134,4 @@ func Paginate[T any](r *http.Request, allItems []T) (pagedItems []T, total uint)
 	}
 
 	return allItems[startIndex:endIndex], total
-}
-
-// removeTopStruct 移除验证器返回中的顶层结构
-func removeTopStruct(fields map[string]string) map[string]string {
-	res := map[string]string{}
-	for field, err := range fields {
-		res[field[strings.Index(field, ".")+1:]] = err
-	}
-	return res
 }

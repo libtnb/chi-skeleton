@@ -1,7 +1,15 @@
 package main
 
-import "github.com/go-rat/chi-skeleton/internal/bootstrap"
+import "runtime/debug"
 
 func main() {
-	bootstrap.Boot()
+	debug.SetGCPercent(10)
+	debug.SetMemoryLimit(128 << 20)
+
+	app, err := initApp()
+	if err != nil {
+		panic(err)
+	}
+
+	app.Run()
 }

@@ -1,31 +1,32 @@
 package bootstrap
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/knadh/koanf/v2"
 
-	"github.com/go-rat/chi-skeleton/internal/app"
 	"github.com/go-rat/chi-skeleton/internal/http/middleware"
 	"github.com/go-rat/chi-skeleton/internal/route"
 )
 
-func initHttp() {
-	app.Http = chi.NewRouter()
+func NewRouter(http *route.Http) (*chi.Mux, error) {
+	r := chi.NewRouter()
 
 	// add middleware
-	app.Http.Use(middleware.GlobalMiddleware()...)
+	r.Use(middleware.GlobalMiddleware(r)...)
+	// add http route
+	http.Register(r)
 
-	// add route
-	route.Http(app.Http)
+	return r, nil
+}
 
+func NewHttp(conf *koanf.Koanf, r *chi.Mux) (*http.Server, error) {
 	server := &http.Server{
-		Addr:           app.Conf.MustString("http.address"),
-		Handler:        http.AllowQuerySemicolons(app.Http),
-		MaxHeaderBytes: app.Conf.MustInt("http.headerLimit") << 10,
+		Addr:           conf.MustString("http.address"),
+		Handler:        http.AllowQuerySemicolons(r),
+		MaxHeaderBytes: conf.MustInt("http.headerLimit") << 10,
 	}
-	if err := server.ListenAndServe(); err != nil {
-		panic(fmt.Sprintf("failed to start http server: %v", err))
-	}
+
+	return server, nil
 }

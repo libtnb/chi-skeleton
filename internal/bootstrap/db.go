@@ -1,40 +1,40 @@
 package bootstrap
 
 import (
-	"fmt"
-
 	"github.com/glebarez/sqlite"
 	"github.com/go-gormigrate/gormigrate/v2"
+	"github.com/knadh/koanf/v2"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"github.com/go-rat/chi-skeleton/internal/app"
 	"github.com/go-rat/chi-skeleton/internal/migration"
 )
 
-func initOrm() {
+func NewDB(conf *koanf.Koanf) (*gorm.DB, error) {
 	logLevel := logger.Error
-	if app.Conf.Bool("database.debug") {
+	if conf.Bool("database.debug") {
 		logLevel = logger.Info
 	}
 	// You can use any other database, like MySQL or PostgreSQL.
-	db, err := gorm.Open(sqlite.Open(app.Conf.MustString("database.path")), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(conf.MustString("database.path")), &gorm.Config{
 		Logger:                                   logger.Default.LogMode(logLevel),
 		SkipDefaultTransaction:                   true,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
-		panic(fmt.Sprintf("failed to connect database: %v", err))
+		return nil, err
 	}
-	app.Orm = db
+
+	return db, nil
 }
 
-func runMigrate() {
-	migrator := gormigrate.New(app.Orm, &gormigrate.Options{
-		UseTransaction:            true, // Note: MySQL not support DDL transaction
-		ValidateUnknownMigrations: true,
+func NewMigrate(db *gorm.DB) error {
+	migrator := gormigrate.New(db, &gormigrate.Options{
+		UseTransaction: true, // Note: MySQL not support DDL transaction
 	}, migration.Migrations)
 	if err := migrator.Migrate(); err != nil {
-		panic(fmt.Sprintf("failed to migrate database: %v", err))
+		return err
 	}
+
+	return nil
 }

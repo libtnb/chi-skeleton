@@ -1,26 +1,24 @@
 package bootstrap
 
 import (
-	"fmt"
-
 	"github.com/go-playground/locales/zh_Hans_CN"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-playground/validator/v10/translations/zh"
-
-	"github.com/go-rat/chi-skeleton/internal/app"
 )
 
-func initValidator() {
+func NewValidator() *validator.Validate {
+	return validator.New(validator.WithRequiredStructEnabled())
+}
+
+func NewTranslator(validate *validator.Validate) (*ut.Translator, error) {
 	translator := zh_Hans_CN.New()
 	uni := ut.New(translator, translator)
 	trans, _ := uni.GetTranslator("zh_Hans_CN")
 
-	validate := validator.New(validator.WithRequiredStructEnabled())
 	if err := zh.RegisterDefaultTranslations(validate, trans); err != nil {
-		panic(fmt.Sprintf("failed to register validator translations: %v", err))
+		return nil, err
 	}
 
-	app.Translator = &trans
-	app.Validator = validate
+	return &trans, nil
 }

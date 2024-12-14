@@ -3,28 +3,31 @@ package service
 import (
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
+
 	"github.com/go-rat/chi-skeleton/internal/biz"
-	"github.com/go-rat/chi-skeleton/internal/data"
 	"github.com/go-rat/chi-skeleton/internal/http/request"
 )
 
 type UserService struct {
-	repo biz.UserRepo
+	validator *validator.Validate
+	user      biz.UserRepo
 }
 
-func NewUserService() *UserService {
+func NewUserService(validator *validator.Validate, user biz.UserRepo) *UserService {
 	return &UserService{
-		repo: data.NewUserRepo(),
+		validator: validator,
+		user:      user,
 	}
 }
 
 func (s *UserService) List(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.Paginate](r)
+	req, err := Bind[request.Paginate](r, s.validator)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
-	users, total, err := s.repo.List(req.Page, req.Limit)
+	users, total, err := s.user.List(req.Page, req.Limit)
 	if err != nil {
 		ErrorSystem(w)
 		return
@@ -38,13 +41,13 @@ func (s *UserService) List(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.UserID](r)
+	req, err := Bind[request.UserID](r, s.validator)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
 
-	user, err := s.repo.Get(req.ID)
+	user, err := s.user.Get(req.ID)
 	if err != nil {
 		ErrorSystem(w)
 		return
@@ -55,7 +58,7 @@ func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.AddUser](r)
+	req, err := Bind[request.AddUser](r, s.validator)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
@@ -63,7 +66,7 @@ func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
 
 	user := new(biz.User)
 	user.Name = req.Name
-	if err = s.repo.Save(user); err != nil {
+	if err = s.user.Save(user); err != nil {
 		ErrorSystem(w)
 		return
 	}
@@ -73,7 +76,7 @@ func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.UpdateUser](r)
+	req, err := Bind[request.UpdateUser](r, s.validator)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
@@ -82,7 +85,7 @@ func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
 	user := new(biz.User)
 	user.ID = req.ID
 	user.Name = req.Name
-	if err = s.repo.Save(user); err != nil {
+	if err = s.user.Save(user); err != nil {
 		ErrorSystem(w)
 		return
 	}
@@ -92,13 +95,13 @@ func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Delete(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.UserID](r)
+	req, err := Bind[request.UserID](r, s.validator)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
 
-	if err = s.repo.Delete(req.ID); err != nil {
+	if err = s.user.Delete(req.ID); err != nil {
 		ErrorSystem(w)
 		return
 	}
