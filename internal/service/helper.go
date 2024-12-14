@@ -1,14 +1,12 @@
 package service
 
 import (
-	"errors"
-	"fmt"
 	"net/http"
 	"slices"
 	"strings"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/go-rat/chix"
+	"github.com/gookit/validate"
 
 	"github.com/go-rat/chi-skeleton/internal/http/request"
 )
@@ -55,7 +53,7 @@ func ErrorSystem(w http.ResponseWriter) {
 }
 
 // Bind 验证并绑定请求参数
-func Bind[T any](r *http.Request, validate *validator.Validate) (*T, error) {
+func Bind[T any](r *http.Request) (*T, error) {
 	req := new(T)
 
 	// 绑定参数
@@ -74,6 +72,11 @@ func Bind[T any](r *http.Request, validate *validator.Validate) (*T, error) {
 	}
 
 	// 准备验证
+	df, err := validate.FromStruct(req)
+	if err != nil {
+		return nil, err
+	}
+	v := df.Create()
 	if reqWithPrepare, ok := any(req).(request.WithPrepare); ok {
 		if err := reqWithPrepare.Prepare(r); err != nil {
 			return nil, err
@@ -86,29 +89,28 @@ func Bind[T any](r *http.Request, validate *validator.Validate) (*T, error) {
 	}
 	if reqWithRules, ok := any(req).(request.WithRules); ok {
 		if rules := reqWithRules.Rules(r); rules != nil {
-			validate.RegisterStructValidationMapRules(rules, req)
-		}
-	}
-
-	// 验证参数
-	err := validate.Struct(req)
-	if err == nil {
-		return req, nil
-	}
-
-	// 翻译错误信息
-	var errs validator.ValidationErrors
-	if errors.As(err, &errs) {
-		for _, e := range errs {
-			if reqWithMessages, ok := any(req).(request.WithMessages); ok {
-				if msg, found := reqWithMessages.Messages(r)[fmt.Sprintf("%s.%s", e.Field(), e.Tag())]; found {
-					return nil, errors.New(msg)
-				}
+			for key, value := range rules {
+				v.StringRule(key, value)
 			}
 		}
 	}
+	if reqWithFilters, ok := any(req).(request.WithFilters); ok {
+		if filters := reqWithFilters.Filters(r); filters != nil {
+			v.FilterRules(filters)
+		}
+	}
+	if reqWithMessages, ok := any(req).(request.WithMessages); ok {
+		if messages := reqWithMessages.Messages(r); messages != nil {
+			v.AddMessages(messages)
+		}
+	}
 
-	return nil, err
+	// 开始验证
+	if v.Validate() && v.IsSuccess() {
+		return req, nil
+	}
+
+	return nil, v.Errors.ErrOrNil()
 }
 
 // Paginate 取分页条目

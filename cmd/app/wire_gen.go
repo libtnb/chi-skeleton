@@ -22,13 +22,12 @@ func initApp() (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
-	validate := bootstrap.NewValidator()
 	db, err := bootstrap.NewDB(koanf)
 	if err != nil {
 		return nil, err
 	}
 	userRepo := data.NewUserRepo(db)
-	userService := service.NewUserService(validate, userRepo)
+	userService := service.NewUserService(userRepo)
 	http := route.NewHttp(userService)
 	mux, err := bootstrap.NewRouter(http)
 	if err != nil {
@@ -38,10 +37,6 @@ func initApp() (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
-	translator, err := bootstrap.NewTranslator(validate)
-	if err != nil {
-		return nil, err
-	}
-	appApp := app.NewApp(koanf, mux, server, db, validate, translator)
+	appApp := app.NewApp(koanf, mux, server, db)
 	return appApp, nil
 }

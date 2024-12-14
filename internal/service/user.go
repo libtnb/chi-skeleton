@@ -3,26 +3,22 @@ package service
 import (
 	"net/http"
 
-	"github.com/go-playground/validator/v10"
-
 	"github.com/go-rat/chi-skeleton/internal/biz"
 	"github.com/go-rat/chi-skeleton/internal/http/request"
 )
 
 type UserService struct {
-	validator *validator.Validate
-	user      biz.UserRepo
+	user biz.UserRepo
 }
 
-func NewUserService(validator *validator.Validate, user biz.UserRepo) *UserService {
+func NewUserService(user biz.UserRepo) *UserService {
 	return &UserService{
-		validator: validator,
-		user:      user,
+		user: user,
 	}
 }
 
 func (s *UserService) List(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.Paginate](r, s.validator)
+	req, err := Bind[request.Paginate](r)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
@@ -41,7 +37,7 @@ func (s *UserService) List(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.UserID](r, s.validator)
+	req, err := Bind[request.UserID](r)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
@@ -58,7 +54,7 @@ func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.AddUser](r, s.validator)
+	req, err := Bind[request.AddUser](r)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
@@ -76,7 +72,7 @@ func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.UpdateUser](r, s.validator)
+	req, err := Bind[request.UpdateUser](r)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
@@ -95,7 +91,7 @@ func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Delete(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.UserID](r, s.validator)
+	req, err := Bind[request.UserID](r)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, err.Error())
 		return
