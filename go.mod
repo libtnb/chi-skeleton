@@ -3,11 +3,11 @@ module github.com/go-rat/chi-skeleton
 go 1.22
 
 require (
+	github.com/dromara/carbon/v2 v2.5.2
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.2
 	github.com/go-rat/chix v1.1.3
-	github.com/golang-module/carbon/v2 v2.3.12
 	github.com/google/wire v0.6.0
 	github.com/gookit/validate v1.5.3
 	github.com/knadh/koanf/parsers/yaml v0.1.0
