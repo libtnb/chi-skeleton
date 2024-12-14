@@ -22,6 +22,7 @@ require (
 	github.com/knadh/koanf/v2 v2.1.2
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/urfave/cli/v3 v3.0.0-beta1
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/gorm v1.25.12
 )
