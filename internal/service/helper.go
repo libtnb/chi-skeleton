@@ -116,7 +116,7 @@ func Bind[T any](r *http.Request) (*T, error) {
 		return req, nil
 	}
 
-	return nil, v.Errors.ErrOrNil()
+	return nil, v.Errors.OneError()
 }
 
 // Paginate 取分页条目
