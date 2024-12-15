@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"net/http"
 	"slices"
 	"strings"
@@ -33,12 +34,13 @@ func Success(w http.ResponseWriter, data any) {
 }
 
 // Error 响应错误
-func Error(w http.ResponseWriter, code int, message string) {
+func Error(w http.ResponseWriter, code int, format string, args ...any) {
 	render := chix.NewRender(w)
 	defer render.Release()
+	render.Header(chix.HeaderContentType, chix.MIMEApplicationJSONCharsetUTF8) // must before Status()
 	render.Status(code)
 	render.JSON(&ErrorResponse{
-		Message: message,
+		Message: fmt.Sprintf(format, args...),
 	})
 }
 
@@ -46,6 +48,7 @@ func Error(w http.ResponseWriter, code int, message string) {
 func ErrorSystem(w http.ResponseWriter) {
 	render := chix.NewRender(w)
 	defer render.Release()
+	render.Header(chix.HeaderContentType, chix.MIMEApplicationJSONCharsetUTF8) // must before Status()
 	render.Status(http.StatusInternalServerError)
 	render.JSON(&ErrorResponse{
 		Message: http.StatusText(http.StatusInternalServerError),
@@ -59,16 +62,18 @@ func Bind[T any](r *http.Request) (*T, error) {
 	// 绑定参数
 	binder := chix.NewBind(r)
 	defer binder.Release()
-	if err := binder.URI(req); err != nil {
-		return nil, err
+	if slices.Contains([]string{"POST", "PUT", "PATCH", "DELETE"}, strings.ToUpper(r.Method)) {
+		if r.ContentLength > 0 {
+			if err := binder.Body(req); err != nil {
+				return nil, err
+			}
+		}
 	}
 	if err := binder.Query(req); err != nil {
 		return nil, err
 	}
-	if slices.Contains([]string{"POST", "PUT", "PATCH"}, strings.ToUpper(r.Method)) {
-		if err := binder.Body(req); err != nil {
-			return nil, err
-		}
+	if err := binder.URI(req); err != nil {
+		return nil, err
 	}
 
 	// 准备验证
@@ -77,13 +82,14 @@ func Bind[T any](r *http.Request) (*T, error) {
 		return nil, err
 	}
 	v := df.Create()
+
 	if reqWithPrepare, ok := any(req).(request.WithPrepare); ok {
-		if err := reqWithPrepare.Prepare(r); err != nil {
+		if err = reqWithPrepare.Prepare(r); err != nil {
 			return nil, err
 		}
 	}
 	if reqWithAuthorize, ok := any(req).(request.WithAuthorize); ok {
-		if err := reqWithAuthorize.Authorize(r); err != nil {
+		if err = reqWithAuthorize.Authorize(r); err != nil {
 			return nil, err
 		}
 	}
