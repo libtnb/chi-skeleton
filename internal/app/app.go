@@ -94,7 +94,7 @@ func (r *App) runServer() error {
 	}
 	defer ln.Close()
 
-	fmt.Println("[HTTP] Listening and serving HTTP on", r.conf.MustString("http.address"))
+	fmt.Println("[HTTP] listening and serving on", r.conf.MustString("http.address"))
 	go func() {
 		if err = r.server.Serve(ln); !errors.Is(err, http.ErrServerClosed) {
 			log.Println("[HTTP] server error:", err)
@@ -123,7 +123,7 @@ func (r *App) runServer() error {
 
 // runServerFallback fallback for windows
 func (r *App) runServerFallback() error {
-	fmt.Println("[HTTP] Listening and serving HTTP on", r.conf.MustString("http.address"))
+	fmt.Println("[HTTP] listening and serving on", r.conf.MustString("http.address"))
 	if err := r.server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 		return err
 	}
