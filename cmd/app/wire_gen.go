@@ -10,6 +10,7 @@ import (
 	"github.com/go-rat/chi-skeleton/internal/app"
 	"github.com/go-rat/chi-skeleton/internal/bootstrap"
 	"github.com/go-rat/chi-skeleton/internal/data"
+	"github.com/go-rat/chi-skeleton/internal/http/middleware"
 	"github.com/go-rat/chi-skeleton/internal/route"
 	"github.com/go-rat/chi-skeleton/internal/service"
 )
@@ -35,11 +36,12 @@ func initApp() (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
+	middlewares := middleware.NewMiddlewares(logger, manager)
 	userRepo := data.NewUserRepo(db)
 	userService := service.NewUserService(userRepo)
 	http := route.NewHttp(userService)
 	ws := route.NewWs()
-	mux, err := bootstrap.NewRouter(logger, manager, http, ws)
+	mux, err := bootstrap.NewRouter(middlewares, http, ws)
 	if err != nil {
 		return nil, err
 	}

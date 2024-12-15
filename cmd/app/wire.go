@@ -8,11 +8,12 @@ import (
 	"github.com/go-rat/chi-skeleton/internal/app"
 	"github.com/go-rat/chi-skeleton/internal/bootstrap"
 	"github.com/go-rat/chi-skeleton/internal/data"
+	"github.com/go-rat/chi-skeleton/internal/http/middleware"
 	"github.com/go-rat/chi-skeleton/internal/route"
 	"github.com/go-rat/chi-skeleton/internal/service"
 )
 
 // initApp init application.
 func initApp() (*app.App, error) {
-	panic(wire.Build(bootstrap.ProviderSet, route.ProviderSet, service.ProviderSet, data.ProviderSet, app.NewApp))
+	panic(wire.Build(bootstrap.ProviderSet, middleware.ProviderSet, route.ProviderSet, service.ProviderSet, data.ProviderSet, app.NewApp))
 }
