@@ -6,6 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/bddjr/hlfhr v1.3.5
+	github.com/cloudflare/tableflip v1.2.3
 	github.com/dromara/carbon/v2 v2.5.2
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-chi/chi/v5 v5.1.0
