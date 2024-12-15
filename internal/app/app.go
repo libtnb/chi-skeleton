@@ -59,25 +59,15 @@ func (r *App) Run() error {
 	fmt.Println("[CRON] cron scheduler started")
 
 	// run http server
-	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
-		return r.runServerGraceful()
+	if runtime.GOOS != "windows" {
+		return r.runServer()
 	}
 
-	return r.runServer()
+	return r.runServerFallback()
 }
 
-// runServer fallback for unsupported graceful OS
+// runServer graceful run server
 func (r *App) runServer() error {
-	fmt.Println("[HTTP] Listening and serving HTTP on", r.conf.MustString("http.address"))
-	if err := r.server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-		return err
-	}
-
-	return nil
-}
-
-// runServerGraceful graceful for linux and darwin
-func (r *App) runServerGraceful() error {
 	upg, err := tableflip.New(tableflip.Options{})
 	if err != nil {
 		return err
@@ -129,4 +119,14 @@ func (r *App) runServerGraceful() error {
 
 	// Wait for connections to drain.
 	return r.server.Shutdown(context.Background())
+}
+
+// runServerFallback fallback for windows
+func (r *App) runServerFallback() error {
+	fmt.Println("[HTTP] Listening and serving HTTP on", r.conf.MustString("http.address"))
+	if err := r.server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+
+	return nil
 }
