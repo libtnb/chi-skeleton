@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,33 +16,26 @@ import (
 	"github.com/cloudflare/tableflip"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-gormigrate/gormigrate/v2"
-	"github.com/go-rat/sessions"
+	"github.com/gookit/validate"
 	"github.com/knadh/koanf/v2"
 	"github.com/robfig/cron/v3"
-	"gorm.io/gorm"
 )
 
 type App struct {
 	conf     *koanf.Koanf
 	router   *chi.Mux
 	server   *hlfhr.Server
-	db       *gorm.DB
 	migrator *gormigrate.Gormigrate
 	cron     *cron.Cron
-	session  *sessions.Manager
-	log      *slog.Logger
 }
 
-func NewApp(conf *koanf.Koanf, router *chi.Mux, server *hlfhr.Server, db *gorm.DB, migrator *gormigrate.Gormigrate, cron *cron.Cron, session *sessions.Manager, log *slog.Logger) *App {
+func NewApp(conf *koanf.Koanf, router *chi.Mux, server *hlfhr.Server, migrator *gormigrate.Gormigrate, cron *cron.Cron, _ *validate.Validation) *App {
 	return &App{
 		conf:     conf,
 		router:   router,
 		server:   server,
-		db:       db,
 		migrator: migrator,
 		cron:     cron,
-		session:  session,
-		log:      log,
 	}
 }
 
