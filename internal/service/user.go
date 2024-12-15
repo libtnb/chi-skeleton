@@ -20,7 +20,7 @@ func NewUserService(user biz.UserRepo) *UserService {
 func (s *UserService) List(w http.ResponseWriter, r *http.Request) {
 	req, err := Bind[request.Paginate](r)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, err.Error())
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 	users, total, err := s.user.List(req.Page, req.Limit)
@@ -38,7 +38,7 @@ func (s *UserService) List(w http.ResponseWriter, r *http.Request) {
 func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
 	req, err := Bind[request.UserID](r)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, err.Error())
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
@@ -54,7 +54,7 @@ func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
 func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
 	req, err := Bind[request.AddUser](r)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, err.Error())
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
@@ -71,7 +71,7 @@ func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
 func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
 	req, err := Bind[request.UpdateUser](r)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, err.Error())
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
@@ -89,7 +89,7 @@ func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
 func (s *UserService) Delete(w http.ResponseWriter, r *http.Request) {
 	req, err := Bind[request.UserID](r)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, err.Error())
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
