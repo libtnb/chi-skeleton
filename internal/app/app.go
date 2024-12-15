@@ -85,7 +85,7 @@ func (r *App) runServerGraceful() error {
 	defer upg.Stop()
 
 	// By prefixing PID to log, easy to interrupt from another process.
-	log.SetPrefix(fmt.Sprintf("[PID: %d]", os.Getpid()))
+	log.SetPrefix(fmt.Sprintf("[PID %d]", os.Getpid()))
 
 	// Listen for the process signal to trigger the tableflip upgrade.
 	go func() {
@@ -93,7 +93,7 @@ func (r *App) runServerGraceful() error {
 		signal.Notify(sig, syscall.SIGHUP)
 		for range sig {
 			if err = upg.Upgrade(); err != nil {
-				log.Printf("graceful upgrade failed: %v", err)
+				log.Println("[Graceful] upgrade failed:", err)
 			}
 		}
 	}()
@@ -104,10 +104,10 @@ func (r *App) runServerGraceful() error {
 	}
 	defer ln.Close()
 
-	fmt.Println("[HTTP] Listening and serving HTTP graceful on", r.conf.MustString("http.address"))
+	fmt.Println("[HTTP] Listening and serving HTTP on", r.conf.MustString("http.address"))
 	go func() {
 		if err = r.server.Serve(ln); !errors.Is(err, http.ErrServerClosed) {
-			log.Println("http server error:", err)
+			log.Println("[HTTP] server error:", err)
 		}
 	}()
 
@@ -116,13 +116,14 @@ func (r *App) runServerGraceful() error {
 		return err
 	}
 
+	fmt.Println("[Graceful] ready for upgrade")
 	<-upg.Exit()
 
 	// Make sure to set a deadline on exiting the process
 	// after upg.Exit() is closed. No new upgrades can be
 	// performed if the parent doesn't exit.
 	time.AfterFunc(60*time.Second, func() {
-		log.Println("graceful shutdown timeout")
+		log.Println("[Graceful] shutdown timeout, force exit")
 		os.Exit(1)
 	})
 
