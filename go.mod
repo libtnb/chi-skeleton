@@ -9,7 +9,7 @@ require (
 	github.com/cloudflare/tableflip v1.2.3
 	github.com/dromara/carbon/v2 v2.5.2
 	github.com/glebarez/sqlite v1.11.0
-	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.3
 	github.com/go-rat/chix v1.1.4
 	github.com/go-rat/gormstore v1.0.6
