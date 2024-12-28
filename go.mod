@@ -5,11 +5,11 @@ go 1.23
 toolchain go1.23.4
 
 require (
-	github.com/bddjr/hlfhr v1.3.5
+	github.com/bddjr/hlfhr v1.3.6
 	github.com/cloudflare/tableflip v1.2.3
 	github.com/dromara/carbon/v2 v2.5.2
 	github.com/glebarez/sqlite v1.11.0
-	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/chi/v5 v5.2.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.3
 	github.com/go-rat/chix v1.1.4
 	github.com/go-rat/gormstore v1.0.6
@@ -17,7 +17,7 @@ require (
 	github.com/go-rat/utils v1.0.7
 	github.com/golang-cz/httplog v0.0.0-20241002114323-98e09d6f537a
 	github.com/google/wire v0.6.0
-	github.com/gookit/validate v1.5.3
+	github.com/gookit/validate v1.5.4
 	github.com/gorilla/websocket v1.5.3
 	github.com/knadh/koanf/parsers/yaml v0.1.0
 	github.com/knadh/koanf/providers/file v1.1.2
