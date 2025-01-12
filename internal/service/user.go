@@ -52,7 +52,7 @@ func (s *UserService) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.AddUser](r)
+	req, err := Bind[request.UserAdd](r)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
@@ -69,7 +69,7 @@ func (s *UserService) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) Update(w http.ResponseWriter, r *http.Request) {
-	req, err := Bind[request.UpdateUser](r)
+	req, err := Bind[request.UserUpdate](r)
 	if err != nil {
 		Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
