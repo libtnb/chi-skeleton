@@ -2,12 +2,12 @@ module github.com/go-rat/chi-skeleton
 
 go 1.23
 
-toolchain go1.24.0
+toolchain go1.24.1
 
 require (
 	github.com/bddjr/hlfhr v1.3.8
 	github.com/cloudflare/tableflip v1.2.3
-	github.com/dromara/carbon/v2 v2.5.3
+	github.com/dromara/carbon/v2 v2.5.4
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/go-gormigrate/gormigrate/v2 v2.1.3
