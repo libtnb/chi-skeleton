@@ -3,15 +3,10 @@ app:
   version: "1.0.0"
   key: "a-long-string-with-32-characters"
   debug: true
-
 http:
   debug: true
   address: ":3000"
   headerLimit: 4096
-
 database:
   debug: true
-  host: "localhost"
-  port: 5432
-  user: "root"
-  password: ""
+  path: "go-web-app.db"
