@@ -1,6 +1,6 @@
 module github.com/go-rat/chi-skeleton
 
-go 1.23
+go 1.24.0
 
 toolchain go1.24.1
 
@@ -14,7 +14,7 @@ require (
 	github.com/go-rat/chix v1.1.5
 	github.com/go-rat/gormstore v1.0.6
 	github.com/go-rat/sessions v1.0.14
-	github.com/go-rat/utils v1.0.9
+	github.com/go-rat/utils v1.1.0
 	github.com/golang-cz/httplog v0.0.0-20241002114323-98e09d6f537a
 	github.com/google/wire v0.6.0
 	github.com/gookit/validate v1.5.4
@@ -54,11 +54,11 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/spf13/cast v1.7.1 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	golang.org/x/crypto v0.33.0 // indirect
-	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
-	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
+	golang.org/x/crypto v0.36.0 // indirect
+	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
+	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	modernc.org/libc v1.61.4 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
