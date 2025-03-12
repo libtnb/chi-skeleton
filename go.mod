@@ -13,8 +13,8 @@ require (
 	github.com/go-gormigrate/gormigrate/v2 v2.1.3
 	github.com/go-rat/chix v1.1.5
 	github.com/go-rat/gormstore v1.0.6
-	github.com/go-rat/sessions v1.0.14
-	github.com/go-rat/utils v1.1.0
+	github.com/go-rat/sessions v1.1.0
+	github.com/go-rat/utils v1.1.3
 	github.com/golang-cz/httplog v0.0.0-20241002114323-98e09d6f537a
 	github.com/google/wire v0.6.0
 	github.com/gookit/validate v1.5.4
