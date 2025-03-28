@@ -20,8 +20,8 @@ github.com/glebarez/sqlite v1.11.0 h1:wSG0irqzP6VurnMEpFGer5Li19RpIRi2qvQz++w0GM
 github.com/glebarez/sqlite v1.11.0/go.mod h1:h8/o8j5wiAsqSPoWELDUdJXhjAhsVliSn7bWZjOhrgQ=
 github.com/go-chi/chi/v5 v5.2.1 h1:KOIHODQj58PmL80G2Eak4WdvUzjSJSm0vG72crDCqb8=
 github.com/go-chi/chi/v5 v5.2.1/go.mod h1:L2yAIGWB3H+phAw1NxKwWM+7eUH/lU8pOMm5hHcoops=
-github.com/go-gormigrate/gormigrate/v2 v2.1.3 h1:ei3Vq/rpPI/jCJY9mRHJAKg5vU+EhZyWhBAkaAomQuw=
-github.com/go-gormigrate/gormigrate/v2 v2.1.3/go.mod h1:VJ9FIOBAur+NmQ8c4tDVwOuiJcgupTG105FexPFrXzA=
+github.com/go-gormigrate/gormigrate/v2 v2.1.4 h1:KOPEt27qy1cNzHfMZbp9YTmEuzkY4F4wrdsJW9WFk1U=
+github.com/go-gormigrate/gormigrate/v2 v2.1.4/go.mod h1:y/6gPAH6QGAgP1UfHMiXcqGeJ88/GRQbfCReE1JJD5Y=
 github.com/go-rat/chix v1.1.5 h1:nv+NHODd9o3AwK9JhEaUsuMCAc7cvw4bh39yTrVuo1M=
 github.com/go-rat/chix v1.1.5/go.mod h1:YQP0YT0x/U3Xx5uQe2jfyMiS/bA732Nunnii6MG0wos=
 github.com/go-rat/gormstore v1.0.6 h1:YxmaY6n3JoTk6o9RXoZ1+cQ6HQL+ayf/6d8D76ydCAc=

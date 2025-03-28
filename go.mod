@@ -10,7 +10,7 @@ require (
 	github.com/dromara/carbon/v2 v2.6.1
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-chi/chi/v5 v5.2.1
-	github.com/go-gormigrate/gormigrate/v2 v2.1.3
+	github.com/go-gormigrate/gormigrate/v2 v2.1.4
 	github.com/go-rat/chix v1.1.5
 	github.com/go-rat/gormstore v1.0.6
 	github.com/go-rat/sessions v1.1.0
