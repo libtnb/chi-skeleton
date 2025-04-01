@@ -2,7 +2,7 @@ module github.com/go-rat/chi-skeleton
 
 go 1.24.0
 
-toolchain go1.24.1
+toolchain go1.24.2
 
 require (
 	github.com/bddjr/hlfhr v1.3.8
@@ -25,7 +25,7 @@ require (
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/stretchr/testify v1.10.0
-	github.com/urfave/cli/v3 v3.1.0
+	github.com/urfave/cli/v3 v3.1.1
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/gorm v1.25.12
 )
