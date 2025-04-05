@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -84,7 +85,9 @@ func (r *App) runServer() error {
 	if err != nil {
 		return err
 	}
-	defer ln.Close()
+	defer func(ln net.Listener) {
+		_ = ln.Close()
+	}(ln)
 
 	fmt.Println("[HTTP] listening and serving on", r.conf.MustString("http.address"))
 	go func() {
