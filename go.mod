@@ -18,7 +18,7 @@ require (
 	github.com/google/wire v0.6.0
 	github.com/gookit/validate v1.5.4
 	github.com/gorilla/websocket v1.5.3
-	github.com/knadh/koanf/parsers/yaml v0.1.0
+	github.com/knadh/koanf/parsers/yaml v1.0.0
 	github.com/knadh/koanf/providers/file v1.2.0
 	github.com/knadh/koanf/v2 v2.2.0
 	github.com/ncruces/go-sqlite3 v0.25.0
