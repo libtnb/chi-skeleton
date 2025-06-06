@@ -2,7 +2,7 @@ module github.com/go-rat/chi-skeleton
 
 go 1.24.0
 
-toolchain go1.24.3
+toolchain go1.24.4
 
 require (
 	github.com/bddjr/hlfhr v1.3.8
