@@ -36,7 +36,7 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/go-rat/securecookie v1.1.0 // indirect
-	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/gofiber/schema v1.3.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/gookit/filter v1.2.2 // indirect

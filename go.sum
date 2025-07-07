@@ -26,8 +26,8 @@ github.com/go-rat/sessions v1.1.0 h1:5zCySVVxNE6xLymf5F2u4TQPKIM7kz1MuD4TwIb/7Do
 github.com/go-rat/sessions v1.1.0/go.mod h1:ofnsWh7JoAApzCfIGd60xEyT5HlJY+Nx8zpWcwUXSHc=
 github.com/go-rat/utils v1.1.5 h1:nB5qNU4TxqG9BJe7PdeDzznmh6lk+GIWb7hZcvAY4FQ=
 github.com/go-rat/utils v1.1.5/go.mod h1:SUy4Xw44VkZvo2FaURgiIiJlL6Kukll85fVKMp/50+8=
-github.com/go-viper/mapstructure/v2 v2.2.1 h1:ZAaOCxANMuZx5RCeg0mBdEZk7DZasvvZIxtHqx8aGss=
-github.com/go-viper/mapstructure/v2 v2.2.1/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
+github.com/go-viper/mapstructure/v2 v2.3.0 h1:27XbWsHIqhbdR5TIC911OfYvgSaW93HM+dX7970Q7jk=
+github.com/go-viper/mapstructure/v2 v2.3.0/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
 github.com/gofiber/schema v1.3.0 h1:K3F3wYzAY+aivfCCEHPufCthu5/13r/lzp1nuk6mr3Q=
 github.com/gofiber/schema v1.3.0/go.mod h1:YYwj01w3hVfaNjhtJzaqetymL56VW642YS3qZPhuE6c=
 github.com/golang-cz/httplog v0.0.2 h1:3d8iScWLeMWQG5/bfMZ5Dizh+zvRfNmLBZMe5N2HrGU=
