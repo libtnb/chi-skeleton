@@ -10,7 +10,7 @@ import (
 	sloggorm "github.com/orandin/slog-gorm"
 	"gorm.io/gorm"
 
-	"github.com/go-rat/chi-skeleton/internal/migration"
+	"github.com/libtnb/chi-skeleton/internal/migration"
 )
 
 func NewDB(conf *koanf.Koanf, log *slog.Logger) (*gorm.DB, error) {

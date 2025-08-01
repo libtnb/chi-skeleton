@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/go-rat/chi-skeleton/internal/service"
+	"github.com/libtnb/chi-skeleton/internal/service"
 )
 
 type Http struct {

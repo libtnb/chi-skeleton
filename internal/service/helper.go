@@ -6,10 +6,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/go-rat/chix"
+	"github.com/libtnb/chix"
 	"github.com/gookit/validate"
 
-	"github.com/go-rat/chi-skeleton/internal/http/request"
+	"github.com/libtnb/chi-skeleton/internal/http/request"
 )
 
 // SuccessResponse 通用成功响应

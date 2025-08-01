@@ -3,7 +3,7 @@
 package biz
 
 import (
-	biz "github.com/go-rat/chi-skeleton/internal/biz"
+	biz "github.com/libtnb/chi-skeleton/internal/biz"
 	mock "github.com/stretchr/testify/mock"
 )
 

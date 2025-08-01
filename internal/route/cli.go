@@ -5,7 +5,7 @@ import (
 
 	"github.com/urfave/cli/v3"
 
-	"github.com/go-rat/chi-skeleton/internal/service"
+	"github.com/libtnb/chi-skeleton/internal/service"
 )
 
 type Cli struct {

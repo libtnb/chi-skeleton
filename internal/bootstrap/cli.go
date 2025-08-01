@@ -5,7 +5,7 @@ import (
 
 	"github.com/urfave/cli/v3"
 
-	"github.com/go-rat/chi-skeleton/internal/route"
+	"github.com/libtnb/chi-skeleton/internal/route"
 )
 
 func NewCli(cmd *route.Cli) *cli.Command {

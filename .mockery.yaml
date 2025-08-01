@@ -6,6 +6,6 @@ outpkg: "{{.PackageName}}"
 filename: "{{.InterfaceName}}.go"
 all: True
 packages:
-  github.com/go-rat/chi-skeleton/internal/biz:
+  github.com/libtnb/chi-skeleton/internal/biz:
     config:
       recursive: True

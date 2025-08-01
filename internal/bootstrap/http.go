@@ -7,8 +7,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/knadh/koanf/v2"
 
-	"github.com/go-rat/chi-skeleton/internal/http/middleware"
-	"github.com/go-rat/chi-skeleton/internal/route"
+	"github.com/libtnb/chi-skeleton/internal/http/middleware"
+	"github.com/libtnb/chi-skeleton/internal/route"
 )
 
 func NewRouter(middlewares *middleware.Middlewares, http *route.Http, ws *route.Ws) (*chi.Mux, error) {

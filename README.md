@@ -12,7 +12,7 @@ I started to participate in the development of [Goravel](https://github.com/gora
 
 Goravel is an excellent framework that is very easy to use, but its design that completely copies Laravel makes it a heavyweight framework, which does not meet the above design concepts. Therefore, this skeleton was created.
 
-Unlike [fiber-skeleton](https://github.com/go-rat/fiber-skeleton), this skeleton uses the lightest [chi](https://github.com/go-chi/chi) framework.
+Unlike [fiber-skeleton](https://github.com/libtnb/fiber-skeleton), this skeleton uses the lightest [chi](https://github.com/go-chi/chi) framework.
 
 ## Design
 

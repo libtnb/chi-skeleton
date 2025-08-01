@@ -3,8 +3,8 @@ package service
 import (
 	"net/http"
 
-	"github.com/go-rat/chi-skeleton/internal/biz"
-	"github.com/go-rat/chi-skeleton/internal/http/request"
+	"github.com/libtnb/chi-skeleton/internal/biz"
+	"github.com/libtnb/chi-skeleton/internal/http/request"
 )
 
 type UserService struct {
