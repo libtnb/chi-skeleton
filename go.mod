@@ -3,7 +3,7 @@ module github.com/libtnb/chi-skeleton
 go 1.25.0
 
 require (
-	github.com/bddjr/hlfhr v1.3.8
+	github.com/bddjr/hlfhr v1.4.0
 	github.com/cloudflare/tableflip v1.2.3
 	github.com/dromara/carbon/v2 v2.6.13
 	github.com/go-chi/chi/v5 v5.2.3
