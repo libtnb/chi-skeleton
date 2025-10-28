@@ -3,9 +3,9 @@ module github.com/libtnb/chi-skeleton
 go 1.25.0
 
 require (
-	github.com/bddjr/hlfhr v1.3.8
+	github.com/bddjr/hlfhr v1.4.0
 	github.com/cloudflare/tableflip v1.2.3
-	github.com/dromara/carbon/v2 v2.6.13
+	github.com/dromara/carbon/v2 v2.6.14
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/golang-cz/httplog v0.0.2
@@ -15,7 +15,7 @@ require (
 	github.com/knadh/koanf/parsers/yaml v1.1.0
 	github.com/knadh/koanf/providers/file v1.2.0
 	github.com/knadh/koanf/v2 v2.3.0
-	github.com/libtnb/chix v1.3.1
+	github.com/libtnb/chix v1.3.2
 	github.com/libtnb/gormstore v1.1.1
 	github.com/libtnb/sessions v1.2.1
 	github.com/libtnb/utils v1.2.1
