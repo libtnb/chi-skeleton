@@ -30,9 +30,7 @@ func NewHttp(conf *koanf.Koanf, r *chi.Mux) (*hlfhr.Server, error) {
 		Handler:        http.AllowQuerySemicolons(r),
 		MaxHeaderBytes: 2048 << 20,
 	})
-	srv.HttpOnHttpsPortErrorHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		hlfhr.RedirectToHttps(w, r, http.StatusTemporaryRedirect)
-	})
+	srv.Listen80RedirectTo443 = true
 
 	return srv, nil
 }
