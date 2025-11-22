@@ -60,8 +60,8 @@ github.com/libtnb/gormstore v1.1.1 h1:FG/3P4PuWM6/vB4weVJ31meiSaoeXns1NQlP66quKe
 github.com/libtnb/gormstore v1.1.1/go.mod h1:8A5QzeZxi1MpSmjUVsHTDAL6KnU84feIXMutFLPawwA=
 github.com/libtnb/securecookie v1.2.0 h1:2uc0PBDm0foeSTrcZ9QTX1IEjf6kFEwfgEYSIXQSKrA=
 github.com/libtnb/securecookie v1.2.0/go.mod h1:ja+wNGnQzYqcqXQnJWu6icsaWi5JEBwNEMJ2ReTVDxA=
-github.com/libtnb/sessions v1.2.1 h1:O9gkEIeZuqyaxopXrUJcGxlNxmNfRBI8BOK43yLJXDI=
-github.com/libtnb/sessions v1.2.1/go.mod h1:45Bn9d6PseDINLIM1QaJrlCMbzSZ0NWpDbWkdrKJKw0=
+github.com/libtnb/sessions v1.2.2 h1:VTTzzeBDJEkJbaPaIU9C4bRj2oAqD0rgQ7UHFkkaNT4=
+github.com/libtnb/sessions v1.2.2/go.mod h1:qw+FWtBtrPDYCf6MfX0Lk5EhTArpvT72z5Ei4RUMTRg=
 github.com/libtnb/utils v1.2.1 h1:LJmReRREnpqfHyy9PZtNgBh3ZaIGct81b8ZaAsolMkM=
 github.com/libtnb/utils v1.2.1/go.mod h1:o6LEDeC42PXI21uLWdWJWTVYvR9BtAZfzzTGJVQoQiU=
 github.com/mitchellh/copystructure v1.2.0 h1:vpKXTN4ewci03Vljg/q9QvCGUDttBOGBIa15WveJJGw=
