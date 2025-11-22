@@ -5,13 +5,13 @@ go 1.25.0
 require (
 	github.com/bddjr/hlfhr v1.4.0
 	github.com/cloudflare/tableflip v1.2.3
+	github.com/coder/websocket v1.8.14
 	github.com/dromara/carbon/v2 v2.6.15
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/golang-cz/httplog v0.0.2
 	github.com/google/wire v0.7.0
 	github.com/gookit/validate v1.5.6
-	github.com/gorilla/websocket v1.5.3
 	github.com/knadh/koanf/parsers/yaml v1.1.0
 	github.com/knadh/koanf/providers/file v1.2.0
 	github.com/knadh/koanf/v2 v2.3.0

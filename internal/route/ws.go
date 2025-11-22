@@ -3,8 +3,8 @@ package route
 import (
 	"net/http"
 
+	"github.com/coder/websocket"
 	"github.com/go-chi/chi/v5"
-	"github.com/gorilla/websocket"
 )
 
 type Ws struct{}
@@ -15,24 +15,19 @@ func NewWs() *Ws {
 
 func (r *Ws) Register(router *chi.Mux) {
 	router.Get("/ws", func(w http.ResponseWriter, r *http.Request) {
-		upGrader := websocket.Upgrader{
-			ReadBufferSize:  4096,
-			WriteBufferSize: 4096,
-		}
-
-		conn, err := upGrader.Upgrade(w, r, nil)
+		conn, err := websocket.Accept(w, r, nil)
 		if err != nil {
 			http.Error(w, "could not upgrade connection", http.StatusBadRequest)
 			return
 		}
 
 		for {
-			_, msg, err := conn.ReadMessage()
+			_, msg, err := conn.Read(r.Context())
 			if err != nil {
 				http.Error(w, "could not read message", http.StatusBadRequest)
 				return
 			}
-			if err := conn.WriteMessage(websocket.TextMessage, msg); err != nil {
+			if err = conn.Write(r.Context(), websocket.MessageText, msg); err != nil {
 				http.Error(w, "could not write message", http.StatusBadRequest)
 				return
 			}
