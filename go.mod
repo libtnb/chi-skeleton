@@ -17,7 +17,7 @@ require (
 	github.com/knadh/koanf/v2 v2.3.0
 	github.com/libtnb/chix v1.3.2
 	github.com/libtnb/gormstore v1.1.1
-	github.com/libtnb/sessions v1.2.1
+	github.com/libtnb/sessions v1.2.2
 	github.com/libtnb/utils v1.2.1
 	github.com/ncruces/go-sqlite3 v0.30.1
 	github.com/ncruces/go-sqlite3/gormlite v0.30.1
