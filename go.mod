@@ -19,8 +19,8 @@ require (
 	github.com/libtnb/gormstore v1.1.1
 	github.com/libtnb/sessions v1.2.2
 	github.com/libtnb/utils v1.2.1
-	github.com/ncruces/go-sqlite3 v0.30.1
-	github.com/ncruces/go-sqlite3/gormlite v0.30.1
+	github.com/ncruces/go-sqlite3 v0.30.2
+	github.com/ncruces/go-sqlite3/gormlite v0.30.2
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/stretchr/testify v1.11.1
@@ -48,10 +48,10 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/tetratelabs/wazero v1.10.0 // indirect
+	github.com/tetratelabs/wazero v1.10.1 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
