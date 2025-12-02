@@ -19,7 +19,7 @@ require (
 	github.com/libtnb/gormstore v1.1.1
 	github.com/libtnb/sessions v1.2.2
 	github.com/libtnb/utils v1.2.1
-	github.com/ncruces/go-sqlite3 v0.30.2
+	github.com/ncruces/go-sqlite3 v0.30.3
 	github.com/ncruces/go-sqlite3/gormlite v0.30.2
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
