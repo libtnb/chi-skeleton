@@ -28,7 +28,7 @@ func NewHttp(conf *koanf.Koanf, r *chi.Mux) (*hlfhr.Server, error) {
 	srv := hlfhr.New(&http.Server{
 		Addr:           conf.MustString("http.address"),
 		Handler:        http.AllowQuerySemicolons(r),
-		MaxHeaderBytes: 2048 << 20,
+		MaxHeaderBytes: 4 << 20,
 	})
 	srv.Listen80RedirectTo443 = true
 
