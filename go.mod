@@ -16,8 +16,8 @@ require (
 	github.com/knadh/koanf/providers/file v1.2.1
 	github.com/knadh/koanf/v2 v2.3.2
 	github.com/libtnb/chix v1.3.2
-	github.com/libtnb/gormstore v1.1.1
-	github.com/libtnb/sessions v1.3.1
+	github.com/libtnb/gormstore v1.2.0
+	github.com/libtnb/sessions v1.4.0
 	github.com/libtnb/sqlite v0.1.0
 	github.com/libtnb/utils v1.2.1
 	github.com/orandin/slog-gorm v1.4.0
