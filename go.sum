@@ -1,5 +1,5 @@
-github.com/bddjr/hlfhr v1.5.0 h1:UJYQBlfNoBDFmG2mRBMexvG3OD73VudDwwwFGKo8h9A=
-github.com/bddjr/hlfhr v1.5.0/go.mod h1:YmFjslYd0ulNO0CtykhkhRUXJpfdq9sPVHQ4G67D610=
+github.com/bddjr/hlfhr v1.5.1 h1:FxphatB9VSv8AV/50jwXX3QR12IJFD7fv2P99NymXqs=
+github.com/bddjr/hlfhr v1.5.1/go.mod h1:YmFjslYd0ulNO0CtykhkhRUXJpfdq9sPVHQ4G67D610=
 github.com/cloudflare/tableflip v1.2.3 h1:8I+B99QnnEWPHOY3fWipwVKxS70LGgUsslG7CSfmHMw=
 github.com/cloudflare/tableflip v1.2.3/go.mod h1:P4gRehmV6Z2bY5ao5ml9Pd8u6kuEnlB37pUFMmv7j2E=
 github.com/coder/websocket v1.8.14 h1:9L0p0iKiNOibykf283eHkKUHHrpG7f65OE3BhhO7v9g=
