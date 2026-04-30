@@ -18,7 +18,7 @@ require (
 	github.com/libtnb/chix v1.3.2
 	github.com/libtnb/gormstore v1.2.0
 	github.com/libtnb/sessions v1.4.0
-	github.com/libtnb/sqlite v1.0.4
+	github.com/libtnb/sqlite v1.1.1
 	github.com/libtnb/utils v1.2.1
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
