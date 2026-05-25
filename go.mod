@@ -7,7 +7,7 @@ require (
 	github.com/cloudflare/tableflip v1.2.3
 	github.com/coder/websocket v1.8.14
 	github.com/dromara/carbon/v2 v2.6.16
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/go-chi/chi/v5 v5.3.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.5
 	github.com/golang-cz/httplog v0.0.2
 	github.com/google/wire v0.7.0
@@ -19,7 +19,7 @@ require (
 	github.com/libtnb/gormstore v1.2.0
 	github.com/libtnb/sessions v1.4.0
 	github.com/libtnb/sqlite v1.1.1
-	github.com/libtnb/utils v1.2.1
+	github.com/libtnb/utils v1.2.2
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/stretchr/testify v1.11.1
@@ -33,7 +33,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/gofiber/schema v1.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -53,9 +53,9 @@ require (
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/crypto v0.48.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/text v0.34.0 // indirect
+	golang.org/x/crypto v0.52.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	modernc.org/libc v1.72.0 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
