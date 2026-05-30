@@ -8,13 +8,13 @@ require (
 	github.com/coder/websocket v1.8.14
 	github.com/dromara/carbon/v2 v2.6.16
 	github.com/go-chi/chi/v5 v5.3.0
-	github.com/go-gormigrate/gormigrate/v2 v2.1.5
+	github.com/go-gormigrate/gormigrate/v2 v2.1.6
 	github.com/golang-cz/httplog v0.0.2
 	github.com/google/wire v0.7.0
 	github.com/gookit/validate v1.5.7
 	github.com/knadh/koanf/parsers/yaml v1.1.0
 	github.com/knadh/koanf/providers/file v1.2.1
-	github.com/knadh/koanf/v2 v2.3.4
+	github.com/knadh/koanf/v2 v2.3.5
 	github.com/libtnb/chix v1.3.2
 	github.com/libtnb/gormstore v1.2.1
 	github.com/libtnb/sessions v1.4.2
