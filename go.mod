@@ -11,14 +11,14 @@ require (
 	github.com/go-gormigrate/gormigrate/v2 v2.1.6
 	github.com/golang-cz/httplog v0.0.2
 	github.com/google/wire v0.7.0
-	github.com/gookit/validate v1.5.7
+	github.com/gookit/validate v1.6.0
 	github.com/knadh/koanf/parsers/yaml v1.1.0
 	github.com/knadh/koanf/providers/file v1.2.1
 	github.com/knadh/koanf/v2 v2.3.5
 	github.com/libtnb/chix v1.3.2
 	github.com/libtnb/gormstore v1.2.1
 	github.com/libtnb/sessions v1.4.2
-	github.com/libtnb/sqlite v1.1.1
+	github.com/libtnb/sqlite v1.1.2
 	github.com/libtnb/utils v1.2.2
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/robfig/cron/v3 v3.0.1
@@ -38,7 +38,7 @@ require (
 	github.com/gofiber/schema v1.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gookit/filter v1.2.3 // indirect
-	github.com/gookit/goutil v0.7.4 // indirect
+	github.com/gookit/goutil v0.7.6 // indirect
 	github.com/jaevor/go-nanoid v1.4.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
@@ -57,8 +57,8 @@ require (
 	golang.org/x/sys v0.45.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	modernc.org/libc v1.72.0 // indirect
+	modernc.org/libc v1.72.3 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect
-	modernc.org/sqlite v1.50.0 // indirect
+	modernc.org/sqlite v1.52.0 // indirect
 )
