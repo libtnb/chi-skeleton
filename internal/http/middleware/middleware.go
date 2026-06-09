@@ -33,7 +33,6 @@ func (r *Middlewares) Globals(mux *chi.Mux) []func(http.Handler) http.Handler {
 		//middleware.SupressNotFound(r),// bug https://github.com/go-chi/chi/pull/940
 		middleware.StripSlashes,
 		middleware.RequestID,
-		middleware.RealIP,
 		httplog.RequestLogger(r.log, &httplog.Options{
 			Level:             slog.LevelInfo,
 			LogRequestHeaders: []string{"User-Agent"},
