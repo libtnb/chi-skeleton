@@ -11,7 +11,7 @@ require (
 	github.com/go-gormigrate/gormigrate/v2 v2.1.6
 	github.com/golang-cz/httplog v0.0.2
 	github.com/google/wire v0.7.0
-	github.com/gookit/validate v1.6.0
+	github.com/gookit/validate/v2 v2.0.1
 	github.com/knadh/koanf/parsers/yaml v1.1.0
 	github.com/knadh/koanf/providers/file v1.2.1
 	github.com/knadh/koanf/v2 v2.3.5

@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/gookit/validate/v2"
 	"github.com/libtnb/chix"
-	"github.com/gookit/validate"
 
 	"github.com/libtnb/chi-skeleton/internal/http/request"
 )
