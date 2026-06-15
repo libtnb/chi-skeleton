@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/bddjr/hlfhr v1.6.0
 	github.com/cloudflare/tableflip v1.2.3
-	github.com/coder/websocket v1.8.14
+	github.com/coder/websocket v1.8.15
 	github.com/dromara/carbon/v2 v2.6.16
 	github.com/go-chi/chi/v5 v5.3.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.6
