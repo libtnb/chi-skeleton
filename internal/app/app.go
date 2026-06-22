@@ -17,7 +17,7 @@ import (
 	"github.com/cloudflare/tableflip"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-gormigrate/gormigrate/v2"
-	"github.com/gookit/validate"
+	"github.com/gookit/validate/v2"
 	"github.com/knadh/koanf/v2"
 	"github.com/robfig/cron/v3"
 )
