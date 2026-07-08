@@ -2,126 +2,55 @@ package app
 
 import (
 	"context"
-	"errors"
+	_ "expvar" // registers /debug/vars on the default mux
 	"fmt"
-	"log"
-	"net"
 	"net/http"
-	"os"
-	"os/signal"
-	"runtime"
-	"syscall"
+	_ "net/http/pprof" // registers /debug/pprof on the default mux
 	"time"
 
-	"github.com/bddjr/hlfhr"
-	"github.com/cloudflare/tableflip"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-gormigrate/gormigrate/v2"
-	"github.com/gookit/validate"
-	"github.com/knadh/koanf/v2"
-	"github.com/robfig/cron/v3"
+	"github.com/libtnb/cron"
+	"github.com/libtnb/graceful"
+	"github.com/libtnb/migrate"
+	"github.com/samber/do/v2"
+
+	"github.com/libtnb/chi-skeleton/internal/config"
 )
 
 type App struct {
-	conf     *koanf.Koanf
-	router   *chi.Mux
-	server   *hlfhr.Server
-	migrator *gormigrate.Gormigrate
+	conf     *config.Config
+	server   *http.Server
+	migrator *migrate.Migrator
 	cron     *cron.Cron
 }
 
-func NewApp(conf *koanf.Koanf, router *chi.Mux, server *hlfhr.Server, migrator *gormigrate.Gormigrate, cron *cron.Cron, _ *validate.Validation) *App {
+func NewApp(i do.Injector) (*App, error) {
 	return &App{
-		conf:     conf,
-		router:   router,
-		server:   server,
-		migrator: migrator,
-		cron:     cron,
-	}
+		conf:     do.MustInvoke[*config.Config](i),
+		server:   do.MustInvoke[*http.Server](i),
+		migrator: do.MustInvoke[*migrate.Migrator](i),
+		cron:     do.MustInvoke[*cron.Cron](i),
+	}, nil
 }
 
+// Run migrates the database, then hands the lifecycle to graceful:
+// SIGINT/SIGTERM drains everything, SIGHUP hot-upgrades the binary.
 func (r *App) Run() error {
-	// migrate database
-	if err := r.migrator.Migrate(); err != nil {
+	if err := r.migrator.Up(context.Background()); err != nil {
 		return err
 	}
 	fmt.Println("[DB] database migrated")
 
-	// start cron scheduler
-	r.cron.Start()
-	fmt.Println("[CRON] cron scheduler started")
-
-	// run http server
-	if runtime.GOOS != "windows" {
-		return r.runServer()
+	g := graceful.New(
+		graceful.WithUpgrade(),
+		graceful.WithShutdownTimeout(30*time.Second),
+	)
+	// pprof/expvar live on http.DefaultServeMux, served on a private port
+	if addr := r.conf.HTTP.DebugAddress; addr != "" {
+		g.Listen("debug", addr, &http.Server{})
 	}
+	g.Add("cron", r.cron.Start, r.cron.Stop)
+	g.Listen("http", r.conf.HTTP.Address, r.server)
 
-	return r.runServerFallback()
-}
-
-// runServer graceful run server
-func (r *App) runServer() error {
-	upg, err := tableflip.New(tableflip.Options{})
-	if err != nil {
-		return err
-	}
-	defer upg.Stop()
-
-	// By prefixing PID to log, easy to interrupt from another process.
-	log.SetPrefix(fmt.Sprintf("[PID %d]", os.Getpid()))
-
-	// Listen for the process signal to trigger the tableflip upgrade.
-	go func() {
-		sig := make(chan os.Signal, 1)
-		signal.Notify(sig, syscall.SIGHUP)
-		for range sig {
-			if err = upg.Upgrade(); err != nil {
-				log.Println("[Graceful] upgrade failed:", err)
-			}
-		}
-	}()
-
-	ln, err := upg.Listen("tcp", r.conf.MustString("http.address"))
-	if err != nil {
-		return err
-	}
-	defer func(ln net.Listener) {
-		_ = ln.Close()
-	}(ln)
-
-	fmt.Println("[HTTP] listening and serving on", r.conf.MustString("http.address"))
-	go func() {
-		if err = r.server.Serve(ln); !errors.Is(err, http.ErrServerClosed) {
-			log.Println("[HTTP] server error:", err)
-		}
-	}()
-
-	// tableflip ready
-	if err = upg.Ready(); err != nil {
-		return err
-	}
-
-	fmt.Println("[Graceful] ready for upgrade")
-	<-upg.Exit()
-
-	// Make sure to set a deadline on exiting the process
-	// after upg.Exit() is closed. No new upgrades can be
-	// performed if the parent doesn't exit.
-	time.AfterFunc(60*time.Second, func() {
-		log.Println("[Graceful] shutdown timeout, force exit")
-		os.Exit(1)
-	})
-
-	// Wait for connections to drain.
-	return r.server.Shutdown(context.Background())
-}
-
-// runServerFallback fallback for windows
-func (r *App) runServerFallback() error {
-	fmt.Println("[HTTP] listening and serving on", r.conf.MustString("http.address"))
-	if err := r.server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-		return err
-	}
-
-	return nil
+	fmt.Println("[HTTP] listening and serving on", r.conf.HTTP.Address)
+	return g.Run()
 }

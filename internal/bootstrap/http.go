@@ -3,34 +3,67 @@ package bootstrap
 import (
 	"net/http"
 
-	"github.com/bddjr/hlfhr"
 	"github.com/go-chi/chi/v5"
-	"github.com/knadh/koanf/v2"
+	"github.com/libtnb/validator"
+	"github.com/libtnb/validator/contrib/openapi"
+	"github.com/samber/do/v2"
 
-	"github.com/libtnb/chi-skeleton/internal/http/middleware"
+	"github.com/libtnb/chi-skeleton/internal/config"
+	"github.com/libtnb/chi-skeleton/internal/middleware"
 	"github.com/libtnb/chi-skeleton/internal/route"
+	"github.com/libtnb/chi-skeleton/internal/service"
 )
 
-func NewRouter(middlewares *middleware.Middlewares, http *route.Http, ws *route.Ws) (*chi.Mux, error) {
-	r := chi.NewRouter()
+func NewRouter(i do.Injector) (*chi.Mux, error) {
+	middlewares := do.MustInvoke[*middleware.Middlewares](i)
 
-	// add middleware
+	// handlers reach this instance through service.Bind / validator.Default
+	validator.SetDefault(do.MustInvoke[*validator.Validator](i))
+
+	r := chi.NewRouter()
 	r.Use(middlewares.Globals(r)...)
-	// add http route
-	http.Register(r)
-	// add ws route
-	ws.Register(r)
+
+	if err := route.HTTP(i, r); err != nil {
+		return nil, err
+	}
+
+	conf := do.MustInvoke[*config.Config](i)
+	if conf.HTTP.Docs {
+		spec, err := route.SpecJSON(i, conf.App.Name)
+		if err != nil {
+			return nil, err
+		}
+		docs := openapi.DocsHTML(conf.App.Name, "/openapi.json")
+		r.Get("/openapi.json", func(w http.ResponseWriter, req *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write(spec)
+		})
+		r.Get("/docs", func(w http.ResponseWriter, req *http.Request) {
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			_, _ = w.Write(docs)
+		})
+	}
+
+	// framework-level errors leave as JSON in the same shape as the API
+	r.NotFound(func(w http.ResponseWriter, req *http.Request) {
+		service.Error(w, http.StatusNotFound, "%s", http.StatusText(http.StatusNotFound))
+	})
+	r.MethodNotAllowed(func(w http.ResponseWriter, req *http.Request) {
+		service.Error(w, http.StatusMethodNotAllowed, "%s", http.StatusText(http.StatusMethodNotAllowed))
+	})
 
 	return r, nil
 }
 
-func NewHttp(conf *koanf.Koanf, r *chi.Mux) (*hlfhr.Server, error) {
-	srv := hlfhr.New(&http.Server{
-		Addr:           conf.MustString("http.address"),
-		Handler:        http.AllowQuerySemicolons(r),
-		MaxHeaderBytes: 4 << 20,
-	})
-	srv.Listen80RedirectTo443 = true
+func NewHttp(i do.Injector) (*http.Server, error) {
+	conf := do.MustInvoke[*config.Config](i)
 
-	return srv, nil
+	return &http.Server{
+		Addr:           conf.HTTP.Address,
+		Handler:        http.AllowQuerySemicolons(do.MustInvoke[*chi.Mux](i)),
+		MaxHeaderBytes: conf.HTTP.HeaderLimit,
+		ReadTimeout:    conf.HTTP.ReadTimeout,
+		WriteTimeout:   conf.HTTP.WriteTimeout,
+		IdleTimeout:    conf.HTTP.IdleTimeout,
+	}, nil
 }

@@ -1,0 +1,101 @@
+package service
+
+import (
+	"net/http"
+
+	"{{.Module}}/internal/biz"
+	"{{.Module}}/internal/request"
+)
+
+// {{.Pascal}}Service adapts HTTP to the {{.Snake}} usecase: bind, validate, delegate, respond.
+type {{.Pascal}}Service struct {
+	{{.Camel}} *biz.{{.Pascal}}Usecase
+}
+
+func New{{.Pascal}}Service({{.Camel}} *biz.{{.Pascal}}Usecase) *{{.Pascal}}Service {
+	return &{{.Pascal}}Service{
+		{{.Camel}}: {{.Camel}},
+	}
+}
+
+func (r *{{.Pascal}}Service) List(w http.ResponseWriter, req *http.Request) {
+	paginate, err := Bind[request.Paginate](req)
+	if err != nil {
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		return
+	}
+
+	items, total, err := r.{{.Camel}}.List(req.Context(), paginate.Page, paginate.Limit)
+	if err != nil {
+		ErrorFrom(w, req, err)
+		return
+	}
+
+	Success(w, map[string]any{
+		"total": total,
+		"items": items,
+	})
+}
+
+func (r *{{.Pascal}}Service) Get(w http.ResponseWriter, req *http.Request) {
+	id, err := Bind[request.{{.Pascal}}ID](req)
+	if err != nil {
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		return
+	}
+
+	{{.Camel}}, err := r.{{.Camel}}.Get(req.Context(), id.ID)
+	if err != nil {
+		ErrorFrom(w, req, err)
+		return
+	}
+
+	Success(w, {{.Camel}})
+}
+
+func (r *{{.Pascal}}Service) Create(w http.ResponseWriter, req *http.Request) {
+	add, err := Bind[request.{{.Pascal}}Add](req)
+	if err != nil {
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		return
+	}
+
+	{{.Camel}}, err := r.{{.Camel}}.Create(req.Context(), add.Name)
+	if err != nil {
+		ErrorFrom(w, req, err)
+		return
+	}
+
+	Success(w, {{.Camel}})
+}
+
+func (r *{{.Pascal}}Service) Update(w http.ResponseWriter, req *http.Request) {
+	upd, err := Bind[request.{{.Pascal}}Update](req)
+	if err != nil {
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		return
+	}
+
+	{{.Camel}}, err := r.{{.Camel}}.Update(req.Context(), upd.ID, upd.Name)
+	if err != nil {
+		ErrorFrom(w, req, err)
+		return
+	}
+
+	Success(w, {{.Camel}})
+}
+
+func (r *{{.Pascal}}Service) Delete(w http.ResponseWriter, req *http.Request) {
+	id, err := Bind[request.{{.Pascal}}ID](req)
+	if err != nil {
+		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		return
+	}
+
+	if err = r.{{.Camel}}.Delete(req.Context(), id.ID); err != nil {
+		ErrorFrom(w, req, err)
+		return
+	}
+
+	Success(w, nil)
+}
