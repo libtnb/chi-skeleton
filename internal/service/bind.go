@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/libtnb/chix"
+	"github.com/libtnb/chix/v2"
 	"github.com/libtnb/validator"
 
 	"github.com/libtnb/chi-skeleton/internal/request"
