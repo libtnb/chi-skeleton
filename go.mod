@@ -7,7 +7,7 @@ require (
 	github.com/dromara/carbon/v2 v2.6.16
 	github.com/go-chi/chi/v5 v5.3.1
 	github.com/go-chi/cors v1.2.2
-	github.com/go-viper/mapstructure/v2 v2.4.0
+	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/golang-cz/httplog v0.0.2
 	github.com/jinzhu/inflection v1.0.0
 	github.com/knadh/koanf/parsers/yaml v1.1.0
@@ -23,9 +23,9 @@ require (
 	github.com/libtnb/sessions v1.5.0
 	github.com/libtnb/sqlite v1.2.0
 	github.com/libtnb/utils v1.2.2
-	github.com/libtnb/validator v0.4.0
+	github.com/libtnb/validator v0.4.1
 	github.com/libtnb/validator/contrib/gormrules v0.1.0
-	github.com/libtnb/validator/contrib/openapi v0.1.2
+	github.com/libtnb/validator/contrib/openapi v0.2.0
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/samber/do/v2 v2.0.0
 	github.com/stretchr/testify v1.11.1
