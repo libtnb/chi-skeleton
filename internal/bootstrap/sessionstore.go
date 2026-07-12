@@ -1,0 +1,78 @@
+package bootstrap
+
+import (
+	"context"
+	"errors"
+	"time"
+
+	"github.com/go-rio/rio"
+	"github.com/libtnb/sessions/driver"
+)
+
+// sessionRow maps to "sessions" rather than the pluralized default;
+// CreatedAt/UpdatedAt are stamped by rio on write.
+type sessionRow struct {
+	ID        string `rio:",pk"`
+	Data      string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func (sessionRow) TableName() string { return "sessions" }
+
+// The driver.Driver interface is context-free, so each method runs on a
+// background context.
+type sessionStore struct {
+	db *rio.DB
+}
+
+func newSessionStore(db *rio.DB) (driver.Driver, error) {
+	_, err := rio.Exec(context.Background(), db, `CREATE TABLE IF NOT EXISTS sessions (
+		id TEXT PRIMARY KEY,
+		data TEXT NOT NULL DEFAULT '',
+		created_at DATETIME,
+		updated_at DATETIME
+	)`)
+	if err != nil {
+		return nil, err
+	}
+	return &sessionStore{db: db}, nil
+}
+
+func (s *sessionStore) Close() error { return nil }
+
+func (s *sessionStore) Destroy(id string) error {
+	_, err := rio.From[sessionRow]().Where("id = ?", id).DeleteAll(context.Background(), s.db)
+	return err
+}
+
+func (s *sessionStore) Read(id string) (string, bool, error) {
+	row, err := rio.Find[sessionRow](context.Background(), s.db, id)
+	if err != nil {
+		if errors.Is(err, rio.ErrNotFound) {
+			return "", false, nil
+		}
+		return "", false, err
+	}
+	return row.Data, true, nil
+}
+
+func (s *sessionStore) Touch(id string) (bool, error) {
+	n, err := rio.From[sessionRow]().Where("id = ?", id).
+		UpdateAll(context.Background(), s.db, rio.Set{"updated_at": time.Now()})
+	if err != nil {
+		return false, err
+	}
+	return n > 0, nil
+}
+
+func (s *sessionStore) Gc(maxLifetime int) error {
+	cutoff := time.Now().Add(-time.Duration(maxLifetime) * time.Second)
+	_, err := rio.From[sessionRow]().Where("updated_at < ?", cutoff).DeleteAll(context.Background(), s.db)
+	return err
+}
+
+func (s *sessionStore) Write(id string, data string) error {
+	row := &sessionRow{ID: id, Data: data}
+	return rio.Upsert(context.Background(), s.db, row, rio.OnConflict("id"), rio.DoUpdate("data"))
+}

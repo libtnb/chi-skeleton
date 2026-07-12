@@ -3,8 +3,8 @@ package service
 import (
 	"net/http"
 
-	"{{.Module}}/internal/biz"
-	"{{.Module}}/internal/request"
+	"{{.Module}}/internal/pkg/transport"
+	"{{.Module}}/internal/{{.Snake}}/biz"
 )
 
 // {{.Pascal}}Service adapts HTTP to the {{.Snake}} usecase: bind, validate, delegate, respond.
@@ -19,83 +19,83 @@ func New{{.Pascal}}Service({{.Camel}} *biz.{{.Pascal}}Usecase) *{{.Pascal}}Servi
 }
 
 func (r *{{.Pascal}}Service) List(w http.ResponseWriter, req *http.Request) {
-	paginate, err := Bind[request.Paginate](req)
+	paginate, err := transport.Bind[transport.Paginate](req)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
 	items, total, err := r.{{.Camel}}.List(req.Context(), paginate.Page, paginate.Limit)
 	if err != nil {
-		ErrorFrom(w, req, err)
+		transport.ErrorFrom(w, req, err)
 		return
 	}
 
-	Success(w, map[string]any{
-		"total": total,
-		"items": items,
+	transport.Success(w, transport.Page[*biz.{{.Pascal}}]{
+		Total: total,
+		Items: items,
 	})
 }
 
 func (r *{{.Pascal}}Service) Get(w http.ResponseWriter, req *http.Request) {
-	id, err := Bind[request.{{.Pascal}}ID](req)
+	{{.Camel}}ID, err := transport.Bind[{{.Pascal}}ID](req)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
-	{{.Camel}}, err := r.{{.Camel}}.Get(req.Context(), id.ID)
+	{{.Camel}}, err := r.{{.Camel}}.Get(req.Context(), {{.Camel}}ID.ID)
 	if err != nil {
-		ErrorFrom(w, req, err)
+		transport.ErrorFrom(w, req, err)
 		return
 	}
 
-	Success(w, {{.Camel}})
+	transport.Success(w, {{.Camel}})
 }
 
 func (r *{{.Pascal}}Service) Create(w http.ResponseWriter, req *http.Request) {
-	add, err := Bind[request.{{.Pascal}}Add](req)
+	{{.Camel}}Add, err := transport.Bind[{{.Pascal}}Add](req)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
-	{{.Camel}}, err := r.{{.Camel}}.Create(req.Context(), add.Name)
+	{{.Camel}}, err := r.{{.Camel}}.Create(req.Context(), {{.Camel}}Add.Name)
 	if err != nil {
-		ErrorFrom(w, req, err)
+		transport.ErrorFrom(w, req, err)
 		return
 	}
 
-	Success(w, {{.Camel}})
+	transport.Success(w, {{.Camel}})
 }
 
 func (r *{{.Pascal}}Service) Update(w http.ResponseWriter, req *http.Request) {
-	upd, err := Bind[request.{{.Pascal}}Update](req)
+	{{.Camel}}Update, err := transport.Bind[{{.Pascal}}Update](req)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
-	{{.Camel}}, err := r.{{.Camel}}.Update(req.Context(), upd.ID, upd.Name)
+	{{.Camel}}, err := r.{{.Camel}}.Update(req.Context(), {{.Camel}}Update.ID, {{.Camel}}Update.Name)
 	if err != nil {
-		ErrorFrom(w, req, err)
+		transport.ErrorFrom(w, req, err)
 		return
 	}
 
-	Success(w, {{.Camel}})
+	transport.Success(w, {{.Camel}})
 }
 
 func (r *{{.Pascal}}Service) Delete(w http.ResponseWriter, req *http.Request) {
-	id, err := Bind[request.{{.Pascal}}ID](req)
+	{{.Camel}}ID, err := transport.Bind[{{.Pascal}}ID](req)
 	if err != nil {
-		Error(w, http.StatusUnprocessableEntity, "%v", err)
+		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
 	}
 
-	if err = r.{{.Camel}}.Delete(req.Context(), id.ID); err != nil {
-		ErrorFrom(w, req, err)
+	if err = r.{{.Camel}}.Delete(req.Context(), {{.Camel}}ID.ID); err != nil {
+		transport.ErrorFrom(w, req, err)
 		return
 	}
 
-	Success(w, nil)
+	transport.Success(w, nil)
 }

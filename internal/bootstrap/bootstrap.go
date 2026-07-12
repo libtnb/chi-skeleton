@@ -3,22 +3,20 @@ package bootstrap
 import (
 	"github.com/samber/do/v2"
 
-	"github.com/libtnb/chi-skeleton/internal/config"
-	"github.com/libtnb/chi-skeleton/internal/middleware"
+	"github.com/libtnb/chi-skeleton/internal/pkg/registry"
 )
 
-// Package wires the infrastructure.
 var Package = do.Package(
-	do.Lazy(func(i do.Injector) (*config.Config, error) { return config.Load() }),
 	do.Lazy(NewLogger),
 	do.Lazy(NewSlog),
-	do.Lazy(NewSession),
-	do.Lazy(middleware.NewMiddlewares),
-	do.Lazy(NewValidator),
-	do.Lazy(NewRouter),
-	do.Lazy(NewHttp),
-	do.Lazy(NewMigrate),
-	do.Lazy(NewCron),
+	do.Lazy(NewData),
+	do.Lazy(ProvideDB),
 	do.Lazy(NewCrypter),
-	do.Lazy(NewCli),
+	do.Lazy(NewValidator),
+	do.Lazy(NewBus),
+	do.Lazy(NewSession),
+	do.Lazy(NewCron),
+	do.LazyNamed(registry.JobPrefix+"heartbeat", Heartbeat),
+	do.Lazy(NewMigrate),
+	do.LazyNamed(registry.CommandPrefix+"migrate", MigrateCommand),
 )
