@@ -6,7 +6,7 @@ require (
 	github.com/coder/websocket v1.8.15
 	github.com/go-chi/chi/v5 v5.3.1
 	github.com/go-chi/cors v1.2.2
-	github.com/go-rio/migrate v0.6.1
+	github.com/go-rio/migrate v0.7.0
 	github.com/go-rio/rio v0.9.0
 	github.com/go-rio/sqlite v0.2.3
 	github.com/go-viper/mapstructure/v2 v2.5.0
@@ -16,7 +16,7 @@ require (
 	github.com/knadh/koanf/providers/env/v2 v2.0.0
 	github.com/knadh/koanf/providers/file v1.2.1
 	github.com/knadh/koanf/v2 v2.3.5
-	github.com/libtnb/chix/v2 v2.1.0
+	github.com/libtnb/chix/v2 v2.1.1
 	github.com/libtnb/cron v0.5.2
 	github.com/libtnb/graceful v0.1.0
 	github.com/libtnb/logrotate v0.1.2
@@ -35,8 +35,8 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/gofiber/schema v1.8.1 // indirect
-	github.com/gofiber/utils/v2 v2.1.1 // indirect
+	github.com/gofiber/schema v1.8.2 // indirect
+	github.com/gofiber/utils/v2 v2.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/jaevor/go-nanoid v1.4.0 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
