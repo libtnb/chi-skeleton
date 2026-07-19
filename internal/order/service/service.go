@@ -1,9 +1,11 @@
-// Package service adapts HTTP to the order usecase and owns the module's
-// request DTOs, route contribution and event subscribers.
+// Package service adapts HTTP to the usecase: bind, validate, delegate,
+// respond.
 package service
 
 import (
 	"net/http"
+
+	"github.com/libtnb/validator"
 
 	"github.com/libtnb/chi-skeleton/internal/order/biz"
 	"github.com/libtnb/chi-skeleton/internal/pkg/transport"
@@ -11,17 +13,19 @@ import (
 
 // OrderService adapts HTTP to the order usecase: bind, validate, delegate, respond.
 type OrderService struct {
-	order *biz.OrderUsecase
+	order    *biz.OrderUsecase
+	validate *validator.Validator
 }
 
-func NewOrderService(order *biz.OrderUsecase) *OrderService {
+func NewOrderService(order *biz.OrderUsecase, validate *validator.Validator) *OrderService {
 	return &OrderService{
-		order: order,
+		order:    order,
+		validate: validate,
 	}
 }
 
 func (r *OrderService) List(w http.ResponseWriter, req *http.Request) {
-	paginate, err := transport.Bind[transport.Paginate](req)
+	paginate, err := transport.Bind[transport.Paginate](req, r.validate)
 	if err != nil {
 		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
@@ -40,7 +44,7 @@ func (r *OrderService) List(w http.ResponseWriter, req *http.Request) {
 }
 
 func (r *OrderService) Get(w http.ResponseWriter, req *http.Request) {
-	orderID, err := transport.Bind[OrderID](req)
+	orderID, err := transport.Bind[OrderID](req, r.validate)
 	if err != nil {
 		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
@@ -56,7 +60,7 @@ func (r *OrderService) Get(w http.ResponseWriter, req *http.Request) {
 }
 
 func (r *OrderService) Create(w http.ResponseWriter, req *http.Request) {
-	create, err := transport.Bind[OrderCreate](req)
+	create, err := transport.Bind[OrderCreate](req, r.validate)
 	if err != nil {
 		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
@@ -72,7 +76,7 @@ func (r *OrderService) Create(w http.ResponseWriter, req *http.Request) {
 }
 
 func (r *OrderService) Delete(w http.ResponseWriter, req *http.Request) {
-	orderID, err := transport.Bind[OrderID](req)
+	orderID, err := transport.Bind[OrderID](req, r.validate)
 	if err != nil {
 		transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 		return
@@ -83,5 +87,5 @@ func (r *OrderService) Delete(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	transport.Success(w, nil)
+	transport.Success[any](w, nil)
 }

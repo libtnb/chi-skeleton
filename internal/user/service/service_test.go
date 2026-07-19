@@ -15,17 +15,15 @@ import (
 
 	"github.com/libtnb/chi-skeleton/internal/user/biz"
 	"github.com/libtnb/chi-skeleton/internal/user/service"
-	mocksbiz "github.com/libtnb/chi-skeleton/mocks/biz"
+	mocksbiz "github.com/libtnb/chi-skeleton/mocks/user/biz"
 )
 
-// newTestRouter wires the service against a mocked repo and a real validator,
-// so tests exercise binding, validation and error mapping end to end.
+// newTestRouter wires the service against a mocked repo and a real validator.
 func newTestRouter(t *testing.T) (*chi.Mux, *mocksbiz.UserRepo) {
 	t.Helper()
 
-	validator.SetDefault(validator.NewValidator())
 	repo := mocksbiz.NewUserRepo(t)
-	user := service.NewUserService(biz.NewUserUsecase(repo))
+	user := service.NewUserService(biz.NewUserUsecase(repo), validator.NewValidator())
 
 	router := chi.NewRouter()
 	router.Get("/users", user.List)
@@ -53,7 +51,7 @@ func do(router *chi.Mux, method, target, body string) *httptest.ResponseRecorder
 
 func TestUserList(t *testing.T) {
 	router, repo := newTestRouter(t)
-	repo.EXPECT().List(mock.Anything, uint(1), uint(10)).
+	repo.EXPECT().List(mock.Anything, 1, 10).
 		Return([]*biz.User{{ID: 1, Name: "alice"}}, int64(1), nil)
 
 	w := do(router, http.MethodGet, "/users", "")
@@ -94,8 +92,6 @@ func TestUserCreate(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
-// a taken name surfaces as the oops code user.name_taken, which ErrorFrom maps
-// to 409 — the handler itself no longer special-cases the error.
 func TestUserCreate_NameTakenMapsToConflict(t *testing.T) {
 	router, repo := newTestRouter(t)
 	repo.EXPECT().ExistsName(mock.Anything, "alice").Return(true, nil)

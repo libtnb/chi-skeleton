@@ -15,7 +15,7 @@ tidy: ## Tidy go.mod
 
 .PHONY: generate
 generate: ## Regenerate mocks
-	go run github.com/vektra/mockery/v3@v3.7.1
+	go tool mockery
 
 .PHONY: gen
 gen: ## Generate a CRUD module: make gen name=article
@@ -26,7 +26,7 @@ gen: ## Generate a CRUD module: make gen name=article
 gen-check: ## Verify generator output still compiles
 	go run ./cmd/gen gencheck
 	go build ./...
-	rm -f internal/biz/gencheck.go internal/data/gencheck.go internal/service/gencheck.go internal/route/gencheck.go internal/request/gencheck.go internal/migration/v*_gencheck.go
+	rm -rf internal/gencheck
 
 .PHONY: lint
 lint: ## Run golangci-lint
@@ -38,8 +38,8 @@ test: ## Run tests with race detector and coverage
 
 .PHONY: build
 build: ## Build app and cli binaries into bin/
-	CGO_ENABLED=0 go build -trimpath -ldflags "$(LDFLAGS)" -o bin/app ./cmd/app
-	CGO_ENABLED=0 go build -trimpath -ldflags "$(LDFLAGS)" -o bin/cli ./cmd/cli
+	CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags "$(LDFLAGS)" -o bin/app ./cmd/app
+	CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags "$(LDFLAGS)" -o bin/cli ./cmd/cli
 
 .PHONY: run
 run: ## Run the HTTP server

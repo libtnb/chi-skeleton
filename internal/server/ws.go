@@ -5,10 +5,12 @@ import (
 
 	"github.com/coder/websocket"
 	"github.com/samber/do/v2"
+
+	"github.com/libtnb/chi-skeleton/internal/pkg/transport"
 )
 
-func WsRoutes(i do.Injector) (Endpoints, error) {
-	return Endpoints{
+func WsRoutes(i do.Injector) (transport.Endpoints, error) {
+	return transport.Endpoints{
 		{Method: http.MethodGet, Path: "/ws", Handler: func(w http.ResponseWriter, req *http.Request) {
 			conn, err := websocket.Accept(w, req, nil)
 			if err != nil {

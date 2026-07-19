@@ -4,11 +4,12 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 ARG VERSION=dev
-RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o /out/app ./cmd/app \
- && CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o /out/cli ./cmd/cli
+RUN CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags "-s -w -X main.version=${VERSION}" -o /out/app ./cmd/app \
+ && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags "-s -w -X main.version=${VERSION}" -o /out/cli ./cmd/cli
 
 FROM alpine:3
-RUN adduser -D -u 1000 app
+RUN apk add --no-cache ca-certificates \
+ && adduser -D -u 1000 app
 WORKDIR /app
 COPY --from=build /out/app /out/cli ./
 RUN mkdir -p config storage/logs storage/sessions && chown -R app:app /app

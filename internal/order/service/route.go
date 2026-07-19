@@ -7,13 +7,12 @@ import (
 
 	"github.com/libtnb/chi-skeleton/internal/order/biz"
 	"github.com/libtnb/chi-skeleton/internal/pkg/transport"
-	"github.com/libtnb/chi-skeleton/internal/server"
 )
 
-func OrderRoutes(i do.Injector) (server.Endpoints, error) {
+func OrderRoutes(i do.Injector) (transport.Endpoints, error) {
 	order := do.MustInvoke[*OrderService](i)
 
-	return server.Endpoints{
+	return transport.Endpoints{
 		{Method: http.MethodGet, Path: "/orders", Handler: order.List,
 			Summary: "List orders", Tags: []string{"order"},
 			Request: transport.Paginate{}, Response: transport.Envelope[transport.Page[*biz.Order]]{}},

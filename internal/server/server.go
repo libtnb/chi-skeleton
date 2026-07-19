@@ -1,10 +1,11 @@
 package server
 
 import (
+	"log/slog"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/libtnb/validator"
+	"github.com/libtnb/sessions"
 	"github.com/libtnb/validator/contrib/openapi"
 	"github.com/samber/do/v2"
 
@@ -13,11 +14,8 @@ import (
 	"github.com/libtnb/chi-skeleton/internal/pkg/transport"
 )
 
-// Package wires the HTTP server: the router, the http.Server around it, the
-// middleware, the probes and the websocket endpoint.
+// Package wires the HTTP server.
 var Package = do.Package(
-	do.Lazy(NewMiddlewares),
-	do.Lazy(NewHealthService),
 	do.Lazy(NewRouter),
 	do.Lazy(NewHttp),
 	do.LazyNamed(registry.RoutePrefix+"health", HealthRoutes),
@@ -25,19 +23,15 @@ var Package = do.Package(
 )
 
 func NewRouter(i do.Injector) (*chi.Mux, error) {
-	middlewares := do.MustInvoke[*Middlewares](i)
-
-	// handlers reach this instance through transport.Bind / validator.Default
-	validator.SetDefault(do.MustInvoke[*validator.Validator](i))
+	config := do.MustInvoke[*conf.Config](i)
 
 	r := chi.NewRouter()
-	r.Use(middlewares.Globals(r)...)
+	r.Use(globalMiddlewares(config, do.MustInvoke[*slog.Logger](i), do.MustInvoke[*sessions.Manager](i))...)
 
 	if err := HTTP(i, r); err != nil {
 		return nil, err
 	}
 
-	config := do.MustInvoke[*conf.Config](i)
 	if config.HTTP.Docs {
 		spec, err := SpecJSON(i, config.App.Name)
 		if err != nil {
@@ -54,7 +48,7 @@ func NewRouter(i do.Injector) (*chi.Mux, error) {
 		})
 	}
 
-	// framework-level errors leave as JSON in the same shape as the API
+	// framework-level errors leave as JSON too
 	r.NotFound(func(w http.ResponseWriter, req *http.Request) {
 		transport.Error(w, http.StatusNotFound, "%s", http.StatusText(http.StatusNotFound))
 	})

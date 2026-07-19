@@ -4,54 +4,32 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/golang-cz/httplog"
 	"github.com/libtnb/sessions"
 	sessionmiddleware "github.com/libtnb/sessions/middleware"
-	"github.com/samber/do/v2"
 
 	"github.com/libtnb/chi-skeleton/internal/conf"
 )
 
-type Middlewares struct {
-	conf    *conf.Config
-	log     *slog.Logger
-	session *sessions.Manager
-}
-
-func NewMiddlewares(i do.Injector) (*Middlewares, error) {
-	return &Middlewares{
-		conf:    do.MustInvoke[*conf.Config](i),
-		log:     do.MustInvoke[*slog.Logger](i),
-		session: do.MustInvoke[*sessions.Manager](i),
-	}, nil
-}
-
-func (r *Middlewares) Globals(mux *chi.Mux) []func(http.Handler) http.Handler {
+func globalMiddlewares(config *conf.Config, log *slog.Logger, session *sessions.Manager) []func(http.Handler) http.Handler {
 	handlers := []func(http.Handler) http.Handler{
 		chimiddleware.Recoverer,
-		chimiddleware.RequestSize(int64(r.conf.HTTP.BodyLimit) << 10),
+		chimiddleware.RequestSize(int64(config.HTTP.BodyLimit) << 10),
 		chimiddleware.StripSlashes,
-		// chi's SupressNotFound is deliberately absent: it matches the raw
-		// URL path and method, so it breaks StripSlashes (trailing-slash
-		// requests 404) and answers every 405 with a 404.
 		chimiddleware.RequestID,
-		// middleware.RealIP is deliberately absent: it blindly trusts
-		// X-Forwarded-For and is spoofable (GHSA-3fxj-6jh8-hvhx). Behind a
-		// trusted proxy, add a middleware that only honors headers set by it.
 	}
 
 	// CORS only when origins are explicitly allowed; empty = same-origin
-	if len(r.conf.HTTP.CorsOrigins) > 0 {
+	if len(config.HTTP.CorsOrigins) > 0 {
 		handlers = append(handlers, cors.Handler(cors.Options{
-			AllowedOrigins: r.conf.HTTP.CorsOrigins,
+			AllowedOrigins: config.HTTP.CorsOrigins,
 		}))
 	}
 
 	return append(handlers,
-		httplog.RequestLogger(r.log, &httplog.Options{
+		httplog.RequestLogger(log, &httplog.Options{
 			Level:             slog.LevelInfo,
 			LogRequestHeaders: []string{"User-Agent"},
 			// probes are noise
@@ -61,9 +39,8 @@ func (r *Middlewares) Globals(mux *chi.Mux) []func(http.Handler) http.Handler {
 		}),
 		requestIDAttr,
 		chimiddleware.Compress(5),
-		// probes carry no cookies; a session per hit would be created,
-		// persisted and garbage-collected for nothing
-		skipProbes(sessionmiddleware.StartSession(r.session)),
+		// a session per probe hit would be persisted and GCed for nothing
+		skipProbes(sessionmiddleware.StartSession(session)),
 	)
 }
 

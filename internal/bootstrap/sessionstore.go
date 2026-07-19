@@ -9,8 +9,7 @@ import (
 	"github.com/libtnb/sessions/driver"
 )
 
-// sessionRow maps to "sessions" rather than the pluralized default;
-// CreatedAt/UpdatedAt are stamped by rio on write.
+// sessionRow maps to "sessions"; CreatedAt/UpdatedAt are stamped by rio.
 type sessionRow struct {
 	ID        string `rio:",pk"`
 	Data      string
@@ -20,8 +19,7 @@ type sessionRow struct {
 
 func (sessionRow) TableName() string { return "sessions" }
 
-// The driver.Driver interface is context-free, so each method runs on a
-// background context.
+// driver.Driver is context-free, so each method runs on a background context.
 type sessionStore struct {
 	db *rio.DB
 }

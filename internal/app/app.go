@@ -5,7 +5,7 @@ import (
 	_ "expvar" // registers /debug/vars on the default mux
 	"fmt"
 	"net/http"
-	_ "net/http/pprof" // registers /debug/pprof on the default mux
+	_ "net/http/pprof" //nolint:gosec // private debug listener only
 	"time"
 
 	"github.com/go-rio/migrate"
@@ -53,7 +53,7 @@ func (r *App) Run() error {
 	)
 	// pprof/expvar live on http.DefaultServeMux, served on a private port
 	if addr := r.conf.HTTP.DebugAddress; addr != "" {
-		g.Listen("debug", addr, &http.Server{})
+		g.Listen("debug", addr, &http.Server{ReadHeaderTimeout: 10 * time.Second})
 	}
 	g.Add("cron", r.cron.Start, r.cron.Stop)
 	g.Listen("http", r.conf.HTTP.Address, r.server)
