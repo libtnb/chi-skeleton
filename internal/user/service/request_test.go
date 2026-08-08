@@ -1,6 +1,7 @@
 package service_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/libtnb/validator"
@@ -13,7 +14,7 @@ import (
 // TestCheckRules catches invalid validate tags at test time; register custom
 // rules here if a request uses them.
 func TestCheckRules(t *testing.T) {
-	v := validator.NewValidator()
+	v := validator.MustNew()
 
 	for _, req := range []any{
 		transport.Paginate{},
@@ -21,6 +22,6 @@ func TestCheckRules(t *testing.T) {
 		service.UserAdd{},
 		service.UserUpdate{},
 	} {
-		assert.NoError(t, v.CheckRules(req), "%T has an invalid validate tag", req)
+		assert.NoError(t, v.CheckType(reflect.TypeOf(req)), "%T has an invalid validate tag", req)
 	}
 }

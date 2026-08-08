@@ -1,6 +1,7 @@
 package transport_test
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -23,7 +24,7 @@ func bindOn[T any](t *testing.T, method, target, body string) (*T, int) {
 	var bound *T
 	router := chi.NewRouter()
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		req, err := transport.Bind[T](r, validator.NewValidator())
+		req, err := transport.Bind[T](r, validator.MustNew())
 		if err != nil {
 			transport.Error(w, http.StatusUnprocessableEntity, "%v", err)
 			return
@@ -82,4 +83,19 @@ func TestBindURI(t *testing.T) {
 	got, status := bindOn[uriReq](t, http.MethodGet, "/bind/42", "")
 	require.Equal(t, http.StatusOK, status)
 	require.EqualValues(t, 42, got.ID)
+}
+
+func TestBindPropagatesCanceledContext(t *testing.T) {
+	var bindErr error
+	router := chi.NewRouter()
+	router.Post("/bind", func(w http.ResponseWriter, r *http.Request) {
+		_, bindErr = transport.Bind[createReq](r, validator.MustNew())
+	})
+
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	req := httptest.NewRequest(http.MethodPost, "/bind", strings.NewReader(`{"name":"alice"}`)).WithContext(ctx)
+	req.Header.Set("Content-Type", "application/json")
+	router.ServeHTTP(httptest.NewRecorder(), req)
+	require.ErrorIs(t, bindErr, context.Canceled)
 }

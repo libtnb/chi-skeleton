@@ -19,6 +19,11 @@ type sessionRow struct {
 
 func (sessionRow) TableName() string { return "sessions" }
 
+var (
+	sessionByIDQuery     = rio.From[sessionRow]().Where("id = ?").Must()
+	expiredSessionsQuery = rio.From[sessionRow]().Where("updated_at < ?").Must()
+)
+
 // driver.Driver is context-free, so each method runs on a background context.
 type sessionStore struct {
 	db *rio.DB
@@ -40,7 +45,7 @@ func newSessionStore(db *rio.DB) (driver.Driver, error) {
 func (s *sessionStore) Close() error { return nil }
 
 func (s *sessionStore) Destroy(id string) error {
-	_, err := rio.From[sessionRow]().Where("id = ?", id).DeleteAll(context.Background(), s.db)
+	_, err := sessionByIDQuery.DeleteAll(context.Background(), s.db, id)
 	return err
 }
 
@@ -56,8 +61,12 @@ func (s *sessionStore) Read(id string) (string, bool, error) {
 }
 
 func (s *sessionStore) Touch(id string) (bool, error) {
-	n, err := rio.From[sessionRow]().Where("id = ?", id).
-		UpdateAll(context.Background(), s.db, rio.Set{"updated_at": time.Now()})
+	n, err := sessionByIDQuery.UpdateAll(
+		context.Background(),
+		s.db,
+		rio.Set{"updated_at": time.Now()},
+		id,
+	)
 	if err != nil {
 		return false, err
 	}
@@ -66,7 +75,7 @@ func (s *sessionStore) Touch(id string) (bool, error) {
 
 func (s *sessionStore) Gc(maxLifetime int) error {
 	cutoff := time.Now().Add(-time.Duration(maxLifetime) * time.Second)
-	_, err := rio.From[sessionRow]().Where("updated_at < ?", cutoff).DeleteAll(context.Background(), s.db)
+	_, err := expiredSessionsQuery.DeleteAll(context.Background(), s.db, cutoff)
 	return err
 }
 

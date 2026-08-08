@@ -4,12 +4,11 @@ import (
 	"net/http"
 
 	"github.com/coder/websocket"
-	"github.com/samber/do/v2"
 
 	"github.com/libtnb/chi-skeleton/internal/pkg/transport"
 )
 
-func WsRoutes(i do.Injector) (transport.Endpoints, error) {
+func WsRoutes() transport.Endpoints {
 	return transport.Endpoints{
 		{Method: http.MethodGet, Path: "/ws", Handler: func(w http.ResponseWriter, req *http.Request) {
 			conn, err := websocket.Accept(w, req, nil)
@@ -28,5 +27,5 @@ func WsRoutes(i do.Injector) (transport.Endpoints, error) {
 				}
 			}
 		}},
-	}, nil
+	}
 }

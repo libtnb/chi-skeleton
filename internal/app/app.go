@@ -11,10 +11,8 @@ import (
 	"github.com/go-rio/migrate"
 	"github.com/libtnb/cron"
 	"github.com/libtnb/graceful"
-	"github.com/samber/do/v2"
 
 	"github.com/libtnb/chi-skeleton/internal/conf"
-	"github.com/libtnb/chi-skeleton/internal/pkg/event"
 	"github.com/libtnb/chi-skeleton/internal/pkg/registry"
 )
 
@@ -25,18 +23,19 @@ type App struct {
 	cron     *cron.Cron
 }
 
-func NewApp(i do.Injector) (*App, error) {
-	// activate every subscriber so its handlers are on the bus before serving
-	if _, err := registry.Collect[event.Subscription](i, registry.SubscriberPrefix); err != nil {
-		return nil, err
-	}
-
+func NewApp(
+	config *conf.Config,
+	server *http.Server,
+	migrator *migrate.Migrator,
+	scheduler *cron.Cron,
+	_ registry.Subscriptions,
+) *App {
 	return &App{
-		conf:     do.MustInvoke[*conf.Config](i),
-		server:   do.MustInvoke[*http.Server](i),
-		migrator: do.MustInvoke[*migrate.Migrator](i),
-		cron:     do.MustInvoke[*cron.Cron](i),
-	}, nil
+		conf:     config,
+		server:   server,
+		migrator: migrator,
+		cron:     scheduler,
+	}
 }
 
 // Run migrates the database, then hands the lifecycle to graceful:

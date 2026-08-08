@@ -6,34 +6,29 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/libtnb/sessions"
+	"github.com/libtnb/validator"
 	"github.com/libtnb/validator/contrib/openapi"
-	"github.com/samber/do/v2"
 
 	"github.com/libtnb/chi-skeleton/internal/conf"
 	"github.com/libtnb/chi-skeleton/internal/pkg/registry"
 	"github.com/libtnb/chi-skeleton/internal/pkg/transport"
 )
 
-// Package wires the HTTP server.
-var Package = do.Package(
-	do.Lazy(NewRouter),
-	do.Lazy(NewHttp),
-	do.LazyNamed(registry.RoutePrefix+"health", HealthRoutes),
-	do.LazyNamed(registry.RoutePrefix+"ws", WsRoutes),
-)
-
-func NewRouter(i do.Injector) (*chi.Mux, error) {
-	config := do.MustInvoke[*conf.Config](i)
-
+func NewRouter(
+	config *conf.Config,
+	log *slog.Logger,
+	session *sessions.Manager,
+	validate *validator.Validator,
+	routes registry.Routes,
+	version Version,
+) (*chi.Mux, error) {
 	r := chi.NewRouter()
-	r.Use(globalMiddlewares(config, do.MustInvoke[*slog.Logger](i), do.MustInvoke[*sessions.Manager](i))...)
+	r.Use(globalMiddlewares(config, log, session)...)
 
-	if err := HTTP(i, r); err != nil {
-		return nil, err
-	}
+	HTTP(routes, r)
 
 	if config.HTTP.Docs {
-		spec, err := SpecJSON(i, config.App.Name)
+		spec, err := SpecJSON(config.App.Name, version, validate, routes)
 		if err != nil {
 			return nil, err
 		}
@@ -59,15 +54,13 @@ func NewRouter(i do.Injector) (*chi.Mux, error) {
 	return r, nil
 }
 
-func NewHttp(i do.Injector) (*http.Server, error) {
-	config := do.MustInvoke[*conf.Config](i)
-
+func NewHTTP(config *conf.Config, router *chi.Mux) *http.Server {
 	return &http.Server{
 		Addr:           config.HTTP.Address,
-		Handler:        http.AllowQuerySemicolons(do.MustInvoke[*chi.Mux](i)),
+		Handler:        http.AllowQuerySemicolons(router),
 		MaxHeaderBytes: config.HTTP.HeaderLimit,
 		ReadTimeout:    config.HTTP.ReadTimeout,
 		WriteTimeout:   config.HTTP.WriteTimeout,
 		IdleTimeout:    config.HTTP.IdleTimeout,
-	}, nil
+	}
 }
