@@ -126,12 +126,6 @@ var userByIDQuery = rio.From[User]().Where("id = ?").Must()
 _, err := userByIDQuery.DeleteAll(ctx, db, id)
 ```
 
-The SQLite bootstrap also enables Rio's default-size prepared-statement cache
-(`rio.WithStmtCache()`, currently 512 entries). `DB.Close` closes cached
-statements before the underlying database. Remove or reassess this option when
-switching to a native driver or a transaction/statement-mode pooler, where
-database/sql statement caching is unsuitable.
-
 ## Observability
 
 - `/healthz` (liveness) and `/readyz` (readiness, pings the DB) are wired for containers and load balancers; the Dockerfile ships a matching `HEALTHCHECK`.
