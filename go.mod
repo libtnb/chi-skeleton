@@ -6,9 +6,9 @@ require (
 	github.com/coder/websocket v1.8.15
 	github.com/go-chi/chi/v5 v5.3.1
 	github.com/go-chi/cors v1.2.2
-	github.com/go-rio/migrate v0.8.0
+	github.com/go-rio/migrate v0.9.0
 	github.com/go-rio/rio v0.10.0
-	github.com/go-rio/sqlite v0.2.3
+	github.com/go-rio/sqlite v0.3.0
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/golang-cz/httplog v0.0.2
 	github.com/jinzhu/inflection v1.0.0
