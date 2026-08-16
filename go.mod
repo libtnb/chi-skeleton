@@ -27,7 +27,7 @@ require (
 	github.com/libtnb/wire v0.1.0
 	github.com/samber/oops v1.23.0
 	github.com/stretchr/testify v1.11.1
-	github.com/urfave/cli/v3 v3.10.1
+	github.com/urfave/cli/v3 v3.11.0
 )
 
 require (
