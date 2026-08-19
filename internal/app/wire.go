@@ -34,10 +34,6 @@ var ApplicationModule = wire.New().
 	Provide(NewApp).
 	Provide(NewCli)
 
-var InitializeApp = ApplicationModule.Injector[
-	func(string) (*App, func() error, error),
-]()
+var InitializeApp = ApplicationModule.Injector[func(string) (*App, func() error, error)]()
 
-var InitializeCLI = ApplicationModule.Injector[
-	func() (*Cli, func() error, error),
-]()
+var InitializeCLI = ApplicationModule.Injector[func() (*Cli, func() error, error)]()

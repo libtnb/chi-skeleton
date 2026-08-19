@@ -20,9 +20,7 @@ Unlike [fiber-skeleton](https://github.com/libtnb/fiber-skeleton), this skeleton
 
 ## Quick start
 
-Requires Go 1.27rc2. Go 1.27 is still a release candidate; switch the module and
-container image to the final release and rerun the complete test/build gate when
-it becomes available.
+Requires Go 1.27.
 
 ```bash
 git clone https://github.com/libtnb/chi-skeleton my-app && cd my-app
