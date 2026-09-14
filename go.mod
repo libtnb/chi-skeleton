@@ -24,9 +24,9 @@ require (
 	github.com/libtnb/utils v1.2.2
 	github.com/libtnb/validator v0.5.0
 	github.com/libtnb/validator/contrib/openapi v0.3.0
-	github.com/libtnb/wire v0.2.0
+	github.com/libtnb/wire v0.3.0
 	github.com/samber/oops v1.23.1
-	github.com/urfave/cli/v3 v3.11.0
+	github.com/urfave/cli/v3 v3.12.0
 )
 
 require (
@@ -64,7 +64,6 @@ require (
 	github.com/samber/lo v1.53.0 // indirect
 	github.com/spf13/cobra v1.10.2 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
-	github.com/stretchr/testify v1.12.1 // indirect
 	github.com/vektra/mockery/v3 v3.8.0 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
