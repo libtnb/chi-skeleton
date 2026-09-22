@@ -7,8 +7,8 @@ require (
 	github.com/go-chi/chi/v5 v5.3.2
 	github.com/go-chi/cors v1.2.2
 	github.com/go-rio/migrate v0.14.0
-	github.com/go-rio/rio v0.19.1
-	github.com/go-rio/sqlite v0.6.4
+	github.com/go-rio/rio v0.21.0
+	github.com/go-rio/sqlite v0.6.8
 	github.com/go-viper/mapstructure/v2 v2.5.0
 	github.com/golang-cz/httplog v0.0.2
 	github.com/knadh/koanf/parsers/yaml v1.1.1
