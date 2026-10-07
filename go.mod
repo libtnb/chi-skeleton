@@ -18,7 +18,7 @@ require (
 	github.com/libtnb/assert v0.4.2
 	github.com/libtnb/chix/v2 v2.1.1
 	github.com/libtnb/cron v0.6.0
-	github.com/libtnb/graceful v0.2.1
+	github.com/libtnb/graceful v0.3.1
 	github.com/libtnb/logrotate v0.1.5
 	github.com/libtnb/sessions v1.5.0
 	github.com/libtnb/utils v1.2.2
