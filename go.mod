@@ -20,7 +20,7 @@ require (
 	github.com/libtnb/cron v0.6.0
 	github.com/libtnb/graceful v0.3.2
 	github.com/libtnb/logrotate v0.1.6
-	github.com/libtnb/sessions v1.5.0
+	github.com/libtnb/sessions v1.6.0
 	github.com/libtnb/utils v1.2.2
 	github.com/libtnb/validator v0.6.0
 	github.com/libtnb/validator/contrib/openapi v0.3.1
